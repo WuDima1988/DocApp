@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<AnchorPane fx:id="rootPane" prefHeight="326.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wudima.docApp.controllers.LoadPageController">
+   <children>
+      <StackPane layoutX="81.0" layoutY="52.0" prefHeight="150.0" prefWidth="240.0">
+         <children>
+            <ImageView fx:id="mainLogoView" fitHeight="146.0" fitWidth="246.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </StackPane>
+      <Label fx:id="loadText" layoutX="184.0" layoutY="213.0" text="Label" />
+   </children>
+</AnchorPane>

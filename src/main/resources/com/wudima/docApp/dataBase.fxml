@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="770.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wudima.docApp.controllers.DataBaseController">
+   <children>
+      <Button fx:id="registerBtn" layoutX="671.0" layoutY="233.0" mnemonicParsing="false" onAction="#switchToRegistration" text="Register" />
+      <TextField fx:id="nameSearch" layoutX="301.0" layoutY="32.0" prefHeight="26.0" prefWidth="148.0" promptText="name" />
+      <TextField fx:id="courseField" layoutX="484.0" layoutY="32.0" promptText="birthPlace" />
+      <TextField fx:id="surnameSearch" layoutX="114.0" layoutY="32.0" prefHeight="26.0" prefWidth="148.0" promptText="surname" />
+      <Button fx:id="searchBtn" layoutX="302.0" layoutY="79.0" mnemonicParsing="false" onAction="#search" text="Search">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Button>
+      <Button fx:id="deleteBtn" layoutX="671.0" layoutY="287.0" mnemonicParsing="false" onAction="#deleteAccount" prefHeight="26.0" prefWidth="62.0" text="Delete" />
+      <TableView fx:id="tableView" layoutX="114.0" layoutY="141.0" prefHeight="329.0" prefWidth="537.0">
+        <columns>
+            <TableColumn fx:id="surnameTable" prefWidth="137.0" text="surname" />
+          <TableColumn fx:id="nameTable" prefWidth="125.0" text="name" />
+            <TableColumn fx:id="sexTable" prefWidth="71.0" text="sex" />
+            <TableColumn fx:id="birthPlaceTable" prefWidth="88.0" text="birthPlace" />
+            <TableColumn fx:id="docTable" prefWidth="115.0" text="doc" />
+        </columns>
+      </TableView>
+      <Button fx:id="detailsBtn" layoutX="671.0" layoutY="181.0" mnemonicParsing="false" onAction="#switchToDetails" prefHeight="26.0" prefWidth="62.0" text="Details" />
+      <Button fx:id="loadBtn" layoutX="311.0" layoutY="504.0" mnemonicParsing="false" onAction="#switchToDLoad" prefHeight="13.0" prefWidth="148.0" style="-fx-background-color: #FFFF00; -fx-border-color: #82827f;" text="Load">
+         <font>
+            <Font name="System Bold" size="23.0" />
+         </font></Button>
+      <Button fx:id="searchBtn1" layoutX="394.0" layoutY="79.0" mnemonicParsing="false" onAction="#setTableView" text="Cancel" />
+      <Button layoutX="712.0" layoutY="23.0" mnemonicParsing="false" onAction="#switchToSettings" prefHeight="35.0" prefWidth="42.0">
+         <graphic>
+            <ImageView fitHeight="23.0" fitWidth="21.0" onDragDetected="#switchToSettings">
+               <image>
+                  <Image url="@imgs/settings.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>
