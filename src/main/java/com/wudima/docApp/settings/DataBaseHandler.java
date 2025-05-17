@@ -1,12 +1,13 @@
 package com.wudima.docApp.settings;
 
+import com.wudima.docApp.account.Account;
+
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataBaseHandler {
 
@@ -68,7 +69,7 @@ public class DataBaseHandler {
             LocalDate birthDate,
             File documentFirstPage,
             File documentSecondPage,
-            File photo) throws SQLException {
+            File photo) {
 
         String insert = "INSERT INTO " +Constant.TABLE_NAME+"("
                 +Constant.NAME+" TEXT, "
@@ -108,5 +109,33 @@ public class DataBaseHandler {
         }
 
 
+    }
+
+    public ArrayList<Account> getAllAccounts(){
+
+        String getAll = "SELECT * FROM " + Constant.TABLE_NAME;
+
+        ArrayList<Account> allAccounts = new ArrayList<>();
+
+        try {
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(getAll);
+
+            while (resultSet.next()) {
+
+                Account account = new Account();
+
+
+
+                resultSet.getInt("id");
+
+                allAccounts.add(account);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return allAccounts;
     }
 }

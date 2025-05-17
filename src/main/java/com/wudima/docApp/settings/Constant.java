@@ -2,7 +2,7 @@ package com.wudima.docApp.settings;
 
 public class Constant {
 
-    public static final String TABLE_NAME = "clients";
+    public static final String TABLE_NAME = "accounts";
     public static final String NAME = "name";
     public static final String SURNAME = "surname";
     public static final String BIRTHPLACE = "birthPlace";
