@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DataBaseHandler {
 
@@ -55,9 +57,21 @@ public class DataBaseHandler {
 
     }
 
-    public void addClient(String name, int age) throws SQLException {
+    public void addClient(
+            String name,
+            String surname,
+            String birthPlace,
+            String sex,
+            String docNumber,
+            Long idNumber,
+            String docType,
+            LocalDate birthDate,
+            File documentFirstPage,
+            File documentSecondPage,
+            File photo) throws SQLException {
 
-        String insert = "INSERT INTO " +Constant.TABLE_NAME+"("+Constant.NAME+" TEXT, "
+        String insert = "INSERT INTO " +Constant.TABLE_NAME+"("
+                +Constant.NAME+" TEXT, "
                 +Constant.SURNAME+" INTEGER, "
                 +Constant.SEX
                 +Constant.BIRTHDATE
@@ -75,7 +89,16 @@ public class DataBaseHandler {
             PreparedStatement preparedStatement = connection.prepareStatement(insert);
 
             preparedStatement.setString(1,name);
-            preparedStatement.setInt(2,age);
+            preparedStatement.setString(2,surname);
+            preparedStatement.setString(3,birthPlace);
+            preparedStatement.setString(4,sex);
+            preparedStatement.setString(5,docNumber);
+            preparedStatement.setLong(6,idNumber);
+            preparedStatement.setString(7,docType);
+            preparedStatement.setString(8,birthDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            preparedStatement.setString(9,documentFirstPage.toString());
+            preparedStatement.setString(10,documentSecondPage.toString());
+            preparedStatement.setString(11,photo.toString());
 
             preparedStatement.executeUpdate();
 
