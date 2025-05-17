@@ -130,7 +130,9 @@ public class DataBaseController implements Initializable {
 
     public void switchToRegistration(ActionEvent event) throws IOException {
 
-        root = FXMLLoader.load(getClass().getResource("registrationPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(DocApplication.class.getResource("/com/wudima/docApp/registrationPage.fxml"));
+
+        root = loader.load();
 
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
