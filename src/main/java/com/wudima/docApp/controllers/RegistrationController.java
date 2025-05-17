@@ -3,6 +3,7 @@ package com.wudima.docApp.controllers;
 
 import com.wudima.docApp.DocApplication;
 import com.wudima.docApp.account.Account;
+import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -124,7 +127,9 @@ public class RegistrationController implements Initializable {
 
     public void save(ActionEvent event) throws IOException, InterruptedException {
 
+
         Account newAcc = new Account();
+
 
         newAcc.setName(Optional.of(nameField.getText()).orElseGet(()->""));
         newAcc.setSurname(Optional.of(surnameField.getText()).orElseGet(()->""));
@@ -157,11 +162,18 @@ public class RegistrationController implements Initializable {
             System.out.println("[RegistrationController] - [save] : fileSecondPage set");
         }
 
+        DataBaseHandler dataBaseHandler = new DataBaseHandler();
+
+        try(Connection connection = dataBaseHandler.getConnection()){
+            dataBaseHandler.addClient(newAcc.getName(), newAcc.getSurname(),newAcc.getSex(), newAcc.getBirthPlace(), newAcc.getDocNumber(), newAcc.getIdNumber(), newAcc.getDocType(), newAcc.getBirthDate(),newAcc.getDocumentFirstPage(),newAcc.getDocumentSecondPage(),newAcc.getPhoto());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
         System.out.println("[RegistrationController] - [save] : new Account was made and setted");
 
-        DocApplication.accountsList.add(newAcc);
 
-        DocApplication.writeToBase();
 
         resultLabel.setText("Saved");
 

@@ -28,17 +28,18 @@ public class DataBaseHandler {
         String url = "jdbc:sqlite:" + dataPath;
 
         connection = DriverManager.getConnection(url);
+        createTableIfNotExist();
 
         return connection;
     }
 
     public void createTableIfNotExist(){
         String createTable = "CREATE TABLE IF NOT EXISTS "+Constant.TABLE_NAME
-                + " (id LONG PRIMARY KEY, "+Constant.NAME+" TEXT, "
+                + " (id LONG PRIMARY KEY, "
+                +Constant.NAME+" TEXT, "
                 +Constant.SURNAME+" INTEGER, "
                 +Constant.SEX+" TEXT, "
                 +Constant.BIRTHDATE+" DATE, "
-                +Constant.SEX+" TEXT, "
                 +Constant.BIRTHPLACE+ " TEXT, "
                 +Constant.DOCNUMBER+ " INTEGER, "
                 +Constant.DOCTYPE+ " TEXT, "

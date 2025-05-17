@@ -4,6 +4,7 @@ package com.wudima.docApp.controllers;
 import com.wudima.docApp.DocApplication;
 import com.wudima.docApp.account.Account;
 import com.wudima.docApp.exceptions.NoPickedAccountException;
+import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +19,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -78,40 +81,43 @@ public class DataBaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
         nameTable.setCellValueFactory(new PropertyValueFactory<Account,String>("name"));
         surnameTable.setCellValueFactory(new PropertyValueFactory<Account,String>("surname"));
         sexTable.setCellValueFactory(new PropertyValueFactory<Account,String>("sex"));
         birthPlaceTable.setCellValueFactory(new PropertyValueFactory<Account,String>("birthPlace"));
         docTable.setCellValueFactory(new PropertyValueFactory<Account,String>("docBase"));
 
-        setTableView();
+        showBase();
+
+//        setTableView();
 
         System.out.println("[DataBaseController]-[initialize] :: Base:");
-        DocApplication.accountsList.forEach(System.out::println);
+//        DocApplication.accountsList.forEach(System.out::println);
 
 
     }
 
-    @FXML
-    private void setTableView() {
-        tableView.setItems(showBase());
-    }
+//    @FXML
+//    private void setTableView() {
+//        tableView.setItems(showBase());
+//    }
 
 
     @FXML
     public void deleteAccount(ActionEvent event) {
 
-        System.out.println("[DataBaseController]-[deleteAccount] :: start");
-
-        Account deleteAcc = DocApplication.accountsList.stream().filter(acc->acc.getId()==clickedAccount(event)).findFirst().get();
-
-        DocApplication.accountsList.remove(deleteAcc);
-
-        DocApplication.writeToBase();
-
-        showBase();
-
-        System.out.println("[DataBaseController]-[deleteAccount] :: ends");
+//        System.out.println("[DataBaseController]-[deleteAccount] :: start");
+//
+//        Account deleteAcc = DocApplication.accountsList.stream().filter(acc->acc.getId()==clickedAccount(event)).findFirst().get();
+//
+//        DocApplication.accountsList.remove(deleteAcc);
+//
+//        DocApplication.writeToBase();
+//
+//        showBase();
+//
+//        System.out.println("[DataBaseController]-[deleteAccount] :: ends");
 
     }
 
@@ -190,21 +196,30 @@ public class DataBaseController implements Initializable {
 
     }
 
-    private ObservableList<Account> showBase() {
+    private void showBase() {
 
         tableView.getItems().removeAll(tableView.getItems());
 
-        System.out.println("[DataBaseController] - [showBase]:run");
+        DataBaseHandler dataBaseHandler = new DataBaseHandler();
 
         ObservableList<Account> list = tableView.getItems();
 
-        ArrayList<Account> accList = DocApplication.accountsList;
+        if(list.size()>0){
+            list.removeAll(tableView.getItems());
+        }
 
-        list.addAll(accList);
+        try{
+            Connection connection = dataBaseHandler.getConnection();
+            list.addAll(dataBaseHandler.getAllAccounts());
+            tableView.setItems(list);
 
-        System.out.println("[DataBaseController] - [showBase]:end");
+            connection.close();
+            System.out.println(connection.isClosed());
 
-        return list;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void search(){
@@ -225,17 +240,17 @@ public class DataBaseController implements Initializable {
 
         ArrayList<Account> accList=new ArrayList<>();
 
-        if(!name.isEmpty() && surname.isEmpty()){
-            accList = DocApplication.accountsList.stream().filter(acc->acc.getName().toLowerCase().equals(name)).collect(Collectors.toCollection(ArrayList::new));
-        }
-        else if (name.isEmpty() && !surname.isEmpty()) {
-            accList = DocApplication.accountsList.stream().filter(acc->acc.getSurname().toLowerCase().equals(surname)).collect(Collectors.toCollection(ArrayList::new));
-        }
-        else if (!name.isEmpty() && !surname.isEmpty()) {
-            accList = DocApplication.accountsList.stream().filter(acc->acc.getName().toLowerCase().equals(surname)&&acc.getSurname().toLowerCase().equals(surname)).collect(Collectors.toCollection(ArrayList::new));
-        } else if (name.isEmpty() && surname.isEmpty()) {
-            return showBase();
-        }
+//        if(!name.isEmpty() && surname.isEmpty()){
+//            accList = DocApplication.accountsList.stream().filter(acc->acc.getName().toLowerCase().equals(name)).collect(Collectors.toCollection(ArrayList::new));
+//        }
+//        else if (name.isEmpty() && !surname.isEmpty()) {
+//            accList = DocApplication.accountsList.stream().filter(acc->acc.getSurname().toLowerCase().equals(surname)).collect(Collectors.toCollection(ArrayList::new));
+//        }
+//        else if (!name.isEmpty() && !surname.isEmpty()) {
+//            accList = DocApplication.accountsList.stream().filter(acc->acc.getName().toLowerCase().equals(surname)&&acc.getSurname().toLowerCase().equals(surname)).collect(Collectors.toCollection(ArrayList::new));
+//        } else if (name.isEmpty() && surname.isEmpty()) {
+//            return showBase();
+//        }
 
 
         list.addAll(accList);

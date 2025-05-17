@@ -199,7 +199,7 @@ public class editPageController implements Initializable {
 
         DocApplication.accountsList.set(listId, pickedAccount);
 
-        DocApplication.writeToBase();
+//        DocApplication.writeToBase();
 
         resultLabel.setText("Saved");
 
