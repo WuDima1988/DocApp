@@ -98,7 +98,7 @@ Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLog
         docTypeField.setFocusTraversable(false);
     }
 
-    public void details(int id) throws FileNotFoundException {
+    public void details(Long id) throws FileNotFoundException {
 
         Account pickedAccount = DocApplication.accountsList.stream().filter(account -> account.getId()==id).findFirst().orElseGet(Account::new);
 

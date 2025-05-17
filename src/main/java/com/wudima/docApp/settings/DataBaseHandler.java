@@ -34,7 +34,7 @@ public class DataBaseHandler {
 
     public void createTableIfNotExist(){
         String createTable = "CREATE TABLE IF NOT EXISTS "+Constant.TABLE_NAME
-                + " (id INTEGER PRIMARY KEY, "+Constant.NAME+" TEXT, "
+                + " (id LONG PRIMARY KEY, "+Constant.NAME+" TEXT, "
                 +Constant.SURNAME+" INTEGER, "
                 +Constant.SEX+" TEXT, "
                 +Constant.BIRTHDATE+" DATE, "
@@ -93,10 +93,10 @@ public class DataBaseHandler {
             preparedStatement.setString(2,surname);
             preparedStatement.setString(3,birthPlace);
             preparedStatement.setString(4,sex);
-            preparedStatement.setString(5,docNumber);
+            preparedStatement.setString(5,birthDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
             preparedStatement.setLong(6,idNumber);
             preparedStatement.setString(7,docType);
-            preparedStatement.setString(8,birthDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            preparedStatement.setString(8,docNumber);
             preparedStatement.setString(9,documentFirstPage.toString());
             preparedStatement.setString(10,documentSecondPage.toString());
             preparedStatement.setString(11,photo.toString());
@@ -126,9 +126,18 @@ public class DataBaseHandler {
 
                 Account account = new Account();
 
+                account.setId(resultSet.getLong(1));
+                account.setName(resultSet.getString(2));
+                account.setSurname(resultSet.getString(3));
+                account.setSex(resultSet.getString(4));
+                account.setBirthDate(LocalDate.parse(resultSet.getString(5)));
+                account.setIdNumber(resultSet.getLong(6));
+                account.setDocType(resultSet.getString(7));
+                account.setDocNumber(resultSet.getString(8));
+                account.setDocumentFirstPage(new File(resultSet.getString(9)));
+                account.setDocumentSecondPage(new File(resultSet.getString(10)));
+                account.setPhoto(new File(resultSet.getString(11)));
 
-
-                resultSet.getInt("id");
 
                 allAccounts.add(account);
             }

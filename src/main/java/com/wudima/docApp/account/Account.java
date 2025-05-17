@@ -4,13 +4,12 @@ import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Random;
 
-public class Account implements Serializable {
+public class Account {
 
-
-    private static final long serialVersionUID = 5454181708532992731L;
-    private int id;
+    private Long id;
     private String name;
     private String surname;
     private String birthPlace;
@@ -25,13 +24,21 @@ public class Account implements Serializable {
     private String docBase;
 
     public Account() {
-        this.id = new Random().nextInt();
+
     }
 
-    public Account(String name, String surname) {
-        this.id = new Random().nextInt();
+    public Account(String name, String surname, String birthPlace, String sex, String docNumber, Long idNumber, String docType, LocalDate birthDate, File documentFirstPage, File documentSecondPage, File photo) {
         this.name = name;
         this.surname = surname;
+        this.birthPlace = birthPlace;
+        this.sex = sex;
+        this.docNumber = docNumber;
+        this.idNumber = idNumber;
+        this.docType = docType;
+        this.birthDate = birthDate;
+        this.documentFirstPage = documentFirstPage;
+        this.documentSecondPage = documentSecondPage;
+        this.photo = photo;
     }
 
     public String getDocBase() {
@@ -48,8 +55,12 @@ public class Account implements Serializable {
         return docBase= "no docs";
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public File getPhoto() {
@@ -141,27 +152,6 @@ public class Account implements Serializable {
     }
 
 
-
-
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + surname.hashCode();
-        result = 31 * result + birthPlace.hashCode();
-        result = 31 * result + birthDate.hashCode();
-        return result;
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Account account)) return false;
-
-        return id == account.id && name.equals(account.name) && surname.equals(account.surname) && birthPlace.equals(account.birthPlace) && birthDate.equals(account.birthDate);
-    }
-
     @Override
     public String toString() {
         return "Account{" +
@@ -176,5 +166,30 @@ public class Account implements Serializable {
                 ", birthDate=" + birthDate +
                 ", docBase='" + docBase + '\'' +
                 '}';
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Account account)) return false;
+
+        return Objects.equals(id, account.id) && Objects.equals(name, account.name) && Objects.equals(surname, account.surname) && Objects.equals(birthPlace, account.birthPlace) && Objects.equals(sex, account.sex) && Objects.equals(docNumber, account.docNumber) && Objects.equals(idNumber, account.idNumber) && Objects.equals(docType, account.docType) && Objects.equals(birthDate, account.birthDate) && Objects.equals(documentFirstPage, account.documentFirstPage) && Objects.equals(documentSecondPage, account.documentSecondPage) && Objects.equals(photo, account.photo);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(name);
+        result = 31 * result + Objects.hashCode(surname);
+        result = 31 * result + Objects.hashCode(birthPlace);
+        result = 31 * result + Objects.hashCode(sex);
+        result = 31 * result + Objects.hashCode(docNumber);
+        result = 31 * result + Objects.hashCode(idNumber);
+        result = 31 * result + Objects.hashCode(docType);
+        result = 31 * result + Objects.hashCode(birthDate);
+        result = 31 * result + Objects.hashCode(documentFirstPage);
+        result = 31 * result + Objects.hashCode(documentSecondPage);
+        result = 31 * result + Objects.hashCode(photo);
+        return result;
     }
 }

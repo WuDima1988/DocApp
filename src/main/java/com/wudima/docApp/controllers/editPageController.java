@@ -94,7 +94,7 @@ public class editPageController implements Initializable {
         sexField.getItems().addAll(sexVariations);
     }
 
-    public void details(int id) throws FileNotFoundException {
+    public void details(Long id) throws FileNotFoundException {
 
         pickedAccount = DocApplication.accountsList.stream().filter(account -> account.getId()==id).findFirst().orElseGet(Account::new);
 

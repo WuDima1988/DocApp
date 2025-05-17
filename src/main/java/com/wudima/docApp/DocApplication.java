@@ -26,10 +26,7 @@ public class DocApplication extends Application {
 
     private static File photoFolder = new File(photoPath);
     private static File base = new File(path);
-//    private static File config = new File(configPath);
     public static ArrayList <Account> accountsList;
-//    static String mainLogo = "imgs/MainLogo.png";
-//    static String progName = "Secure Scan";
     public static Image icon;
     public static AppSettings settings=AppSettings.load();
 

@@ -100,7 +100,7 @@ public class DetailsMainController implements Initializable {
         docTypeField.setFocusTraversable(false);
     }
 
-    public void details(int id) throws FileNotFoundException {
+    public void details(Long id) throws FileNotFoundException {
 
         pickedAccount = DocApplication.accountsList.stream().filter(account -> account.getId()==id).findFirst().orElseGet(Account::new);
 
@@ -144,7 +144,7 @@ public class DetailsMainController implements Initializable {
 
     public void switchToEditn(ActionEvent event) throws IOException {
 
-        int accId = pickedAccount.getId();
+        Long accId = pickedAccount.getId();
 
         System.out.println("[switchToEditn]:: id:"+accId);
 

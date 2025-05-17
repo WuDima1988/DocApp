@@ -115,7 +115,7 @@ public class DataBaseController implements Initializable {
 
     }
 
-    public int clickedAccount(ActionEvent event){
+    public Long clickedAccount(ActionEvent event){
 
         Account clickAccount = tableView.getSelectionModel().getSelectedItem();
         if(clickAccount==null){
@@ -123,7 +123,7 @@ public class DataBaseController implements Initializable {
             alertPickAccount();
             throw new NoPickedAccountException("Account wasn't picked from the table ");
         }
-        int id = clickAccount.getId();
+        Long id = clickAccount.getId();
         return id;
     }
 
@@ -140,7 +140,7 @@ public class DataBaseController implements Initializable {
 
     public void switchToDetails(ActionEvent event) throws IOException {
 
-        int accId = clickedAccount(event);
+        Long accId = clickedAccount(event);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("detailsPageMain.fxml"));
 
@@ -161,7 +161,7 @@ public class DataBaseController implements Initializable {
 
     public void switchToDLoad(ActionEvent event) throws IOException {
 
-        int accId = clickedAccount(event);
+        Long accId = clickedAccount(event);
 
         System.out.println("[switchToDLoad]:: id:"+accId);
 
