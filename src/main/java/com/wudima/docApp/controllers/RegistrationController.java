@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -128,44 +130,69 @@ public class RegistrationController implements Initializable {
     public void save(ActionEvent event) throws IOException, InterruptedException {
 
 
-        Account newAcc = new Account();
 
-
-        newAcc.setName(Optional.of(nameField.getText()).orElseGet(()->""));
-        newAcc.setSurname(Optional.of(surnameField.getText()).orElseGet(()->""));
+        String name = Optional.of(nameField.getText()).orElseGet(()->"");
+        String surname = Optional.of(surnameField.getText()).orElseGet(()->"");
+        String sex="";
         if(sexField.getValue()!=null){
-            newAcc.setSex(sexField.getValue());
-        }
-        if(datePicker.getValue()!=null){
-            newAcc.setBirthDate(datePicker.getValue());
+            sex = sexField.getValue();
         }
 
-        newAcc.setBirthPlace(Optional.of(birthPlaceField.getText()).orElseGet(()->""));
-        newAcc.setDocNumber(Optional.of(docNumberField.getText()).orElseGet(()->""));
+        LocalDate dateBirth =  datePicker.getValue();
+
+        String birthPlace = birthPlaceField.getText();
+        String docNumber = docNumberField.getText();
+
+        Long idNumber;
         if(!idField.getText().isEmpty()){
-            newAcc.setIdNumber(Long.parseLong(idField.getText()));
+            idNumber = Long.parseLong(idField.getText());
+        }else{
+            idNumber= 0L;
         }
-        newAcc.setDocType(Optional.of(docTypeField.getText()).orElseGet(()->""));
+        String docType = docTypeField.getText();
 
+        String photo;
         if(filePhoto !=null){
-            newAcc.setPhoto(filePhoto);
+            photo = filePhoto.getAbsolutePath();
             System.out.println("[RegistrationController] - [save] : filePhoto set");
+        }else{
+            photo = null;
         }
 
+        System.out.println("Photo:" + photo);
+
+        String DocumentFirstPage;
         if(fileFirstPage !=null){
-            newAcc.setDocumentFirstPage(fileFirstPage);
+            DocumentFirstPage = fileFirstPage.getAbsolutePath();
             System.out.println("[RegistrationController] - [save] : fileFirstPage set");
+        }else{
+            DocumentFirstPage = null;
         }
 
+        String DocumentSecondPage;
         if(fileSecondPage !=null){
-            newAcc.setDocumentSecondPage(fileSecondPage);
+            DocumentSecondPage = fileSecondPage.getAbsolutePath();
             System.out.println("[RegistrationController] - [save] : fileSecondPage set");
+        }else{
+            DocumentSecondPage = null;
         }
 
         DataBaseHandler dataBaseHandler = new DataBaseHandler();
 
         try(Connection connection = dataBaseHandler.getConnection()){
-            dataBaseHandler.addClient(newAcc.getName(), newAcc.getSurname(),newAcc.getSex(), newAcc.getBirthPlace(), newAcc.getDocNumber(), newAcc.getIdNumber(), newAcc.getDocType(), newAcc.getBirthDate(),newAcc.getDocumentFirstPage(),newAcc.getDocumentSecondPage(),newAcc.getPhoto());
+            System.out.println("Photo:"+photo+"\n"+"Doc1:"+DocumentFirstPage+"\n"+"Doc2:"+DocumentSecondPage);
+            dataBaseHandler.addClient(
+                    name,
+                    surname,
+                    birthPlace,
+                    sex,
+                   docNumber,
+                    idNumber,
+                    docType,
+                    dateBirth,
+                    DocumentFirstPage,
+                    DocumentSecondPage,
+                    photo);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -186,7 +213,7 @@ public class RegistrationController implements Initializable {
 
     public void switchToDataBase(ActionEvent event) throws IOException {
 
-        root = FXMLLoader.load(getClass().getResource("dataBase.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/dataBase.fxml"));
 
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

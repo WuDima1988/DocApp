@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DocApplication extends Application {
@@ -33,6 +35,13 @@ public class DocApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
+        DataBaseHandler dataBaseHandler = new DataBaseHandler();
+        try(Connection connection = dataBaseHandler.getConnection()){
+            dataBaseHandler.createTableIfNotExist();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         FXMLLoader fxmlLoader = new FXMLLoader(DocApplication.class.getResource("dataBase.fxml"));
         Parent root = fxmlLoader.load();

@@ -61,8 +61,7 @@ public class DetailsController implements Initializable {
     @FXML
     private ImageView doc2Img;
 
-//    Image logoImg = new Image(getClass().getResourceAsStream(DocApplication.mainLogo));
-Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+    Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
 
 
 
@@ -103,7 +102,6 @@ Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLog
         Account pickedAccount = DocApplication.accountsList.stream().filter(account -> account.getId()==id).findFirst().orElseGet(Account::new);
 
 
-
         nameField.setText(Optional.ofNullable(pickedAccount.getName()).orElse(""));
         surnameField.setText(Optional.ofNullable(pickedAccount.getSurname()).orElse(""));
         sexField.setText(Optional.ofNullable(pickedAccount.getSex()).orElse(("")));
@@ -122,10 +120,8 @@ Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLog
         if(pickedAccount.getPhoto()!= null) {
             Image img = new Image(new FileInputStream(pickedAccount.getPhoto()));
             photoImg.setImage(img);
-//            photoImg.setFitWidth(115);
-//            photoImg.setFitHeight(153);
             photoImg.setPreserveRatio(DocApplication.settings.isPhotoFit());
-//            photoImg.setSmooth(true);
+
         }
 
         if(pickedAccount.getDocumentFirstPage()!= null) {

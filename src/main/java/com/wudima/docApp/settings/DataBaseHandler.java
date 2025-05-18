@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DataBaseHandler {
 
@@ -28,7 +29,8 @@ public class DataBaseHandler {
         String url = "jdbc:sqlite:" + dataPath;
 
         connection = DriverManager.getConnection(url);
-        createTableIfNotExist();
+
+//        createTableIfNotExist();
 
         return connection;
     }
@@ -37,13 +39,13 @@ public class DataBaseHandler {
         String createTable = "CREATE TABLE IF NOT EXISTS "+Constant.TABLE_NAME
                 + " (id LONG PRIMARY KEY, "
                 +Constant.NAME+" TEXT, "
-                +Constant.SURNAME+" INTEGER, "
+                +Constant.SURNAME+" TEXT, "
                 +Constant.SEX+" TEXT, "
                 +Constant.BIRTHDATE+" DATE, "
                 +Constant.BIRTHPLACE+ " TEXT, "
-                +Constant.DOCNUMBER+ " INTEGER, "
+                +Constant.DOCNUMBER+ " TEXT, "
                 +Constant.DOCTYPE+ " TEXT, "
-                +Constant.IDNumber+ " INTEGER, "
+                +Constant.IDNumber+ " LONG, "
                 +Constant.PHOTO+ " TEXT, "
                 +Constant.DocFirstPage+" TEXT, "
                 +Constant.DocumentSecondPage+" TEXT "
@@ -68,22 +70,21 @@ public class DataBaseHandler {
             Long idNumber,
             String docType,
             LocalDate birthDate,
-            File documentFirstPage,
-            File documentSecondPage,
-            File photo) {
+            String documentFirstPage,
+            String documentSecondPage,
+            String photo) {
 
         String insert = "INSERT INTO " +Constant.TABLE_NAME+"("
-                +Constant.NAME+" TEXT, "
-                +Constant.SURNAME+" INTEGER, "
-                +Constant.SEX
-                +Constant.BIRTHDATE
-                +Constant.SEX
-                +Constant.BIRTHPLACE
-                +Constant.DOCNUMBER
-                +Constant.DOCTYPE
-                +Constant.IDNumber
-                +Constant.PHOTO
-                +Constant.DocFirstPage
+                +Constant.NAME+","
+                +Constant.SURNAME+","
+                +Constant.SEX+","
+                +Constant.BIRTHDATE+","
+                +Constant.BIRTHPLACE+","
+                +Constant.DOCNUMBER+","
+                +Constant.DOCTYPE+","
+                +Constant.IDNumber+","
+                +Constant.PHOTO+","
+                +Constant.DocFirstPage+","
                 +Constant.DocumentSecondPage
                 +")"+"values(?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -92,15 +93,18 @@ public class DataBaseHandler {
 
             preparedStatement.setString(1,name);
             preparedStatement.setString(2,surname);
-            preparedStatement.setString(3,birthPlace);
-            preparedStatement.setString(4,sex);
-            preparedStatement.setString(5,birthDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-            preparedStatement.setLong(6,idNumber);
+            preparedStatement.setString(3,sex);
+            preparedStatement.setString(4,birthPlace);
+            if(birthDate!=null) {
+                preparedStatement.setString(5, birthDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            }
+            preparedStatement.setString(6,docNumber);
             preparedStatement.setString(7,docType);
-            preparedStatement.setString(8,docNumber);
-            preparedStatement.setString(9,documentFirstPage.toString());
-            preparedStatement.setString(10,documentSecondPage.toString());
-            preparedStatement.setString(11,photo.toString());
+            preparedStatement.setLong(8,idNumber);
+            preparedStatement.setString(9,photo);
+            preparedStatement.setString(10, documentFirstPage);
+            preparedStatement.setString(11,documentSecondPage);
+
 
             preparedStatement.executeUpdate();
 
@@ -131,13 +135,31 @@ public class DataBaseHandler {
                 account.setName(resultSet.getString(2));
                 account.setSurname(resultSet.getString(3));
                 account.setSex(resultSet.getString(4));
-                account.setBirthDate(LocalDate.parse(resultSet.getString(5)));
-                account.setIdNumber(resultSet.getLong(6));
-                account.setDocType(resultSet.getString(7));
-                account.setDocNumber(resultSet.getString(8));
-                account.setDocumentFirstPage(new File(resultSet.getString(9)));
-                account.setDocumentSecondPage(new File(resultSet.getString(10)));
-                account.setPhoto(new File(resultSet.getString(11)));
+                account.setBirthPlace(resultSet.getString(5));
+
+                String birthDateStr = resultSet.getString(6);
+                if (birthDateStr != null && !birthDateStr.isBlank()) {
+                    account.setBirthDate(LocalDate.parse(birthDateStr));
+                } else {
+                    account.setBirthDate(null); // або значення за замовчуванням
+                }
+
+
+                account.setDocNumber(resultSet.getString(7));
+                account.setDocType(resultSet.getString(8));
+                account.setIdNumber(resultSet.getLong(9));
+                String photoPath = resultSet.getString(10);
+                System.out.println("PhotoPath: "+photoPath);
+                account.setPhoto(photoPath != null && !photoPath.isBlank() ? new File(photoPath) : null);
+
+                String doc1Path = resultSet.getString(11);
+                System.out.println("doc1Path: "+doc1Path);
+                account.setDocumentFirstPage(doc1Path != null && !doc1Path.isBlank() ? new File(doc1Path) : null);
+
+                String doc2Path = resultSet.getString(12);
+                account.setDocumentSecondPage(doc2Path != null && !doc2Path.isBlank() ? new File(doc2Path) : null);
+
+
 
 
                 allAccounts.add(account);
