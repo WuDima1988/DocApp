@@ -151,30 +151,24 @@ public class RegistrationController implements Initializable {
         }
         String docType = docTypeField.getText();
 
-        String photo;
+        String photo = null;
         if(filePhoto !=null){
             photo = filePhoto.getAbsolutePath();
             System.out.println("[RegistrationController] - [save] : filePhoto set");
-        }else{
-            photo = null;
         }
 
         System.out.println("Photo:" + photo);
 
-        String DocumentFirstPage;
+        String DocumentFirstPage = null;
         if(fileFirstPage !=null){
             DocumentFirstPage = fileFirstPage.getAbsolutePath();
             System.out.println("[RegistrationController] - [save] : fileFirstPage set");
-        }else{
-            DocumentFirstPage = null;
         }
 
-        String DocumentSecondPage;
+        String DocumentSecondPage = null;
         if(fileSecondPage !=null){
             DocumentSecondPage = fileSecondPage.getAbsolutePath();
             System.out.println("[RegistrationController] - [save] : fileSecondPage set");
-        }else{
-            DocumentSecondPage = null;
         }
 
         DataBaseHandler dataBaseHandler = new DataBaseHandler();

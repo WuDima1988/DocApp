@@ -51,7 +51,13 @@ public class Account {
             return docBase = "only photo";
         }else if (photo!=null&&documentFirstPage!=null && documentSecondPage==null) {
             return docBase = "photo/first page";
-        }else
+        }else if (photo!=null&&documentFirstPage==null && documentSecondPage!=null) {
+            return docBase = "photo/second page";
+        }else if (photo==null&&documentFirstPage!=null && documentSecondPage==null) {
+            return docBase = "first page";
+        }else if (photo==null&&documentFirstPage==null && documentSecondPage!=null) {
+            return docBase = "second page";
+        }
         return docBase= "no docs";
     }
 
