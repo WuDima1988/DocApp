@@ -19,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class LoadPageController implements Initializable {
@@ -34,7 +35,6 @@ public class LoadPageController implements Initializable {
     public Parent root;
     public Stage stage;
     public Scene scene;
-//    Image mainLogo = new Image(getClass().getResourceAsStream(DocApplication.settings.getMainLogo()));
     Image mainLogo = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
     int id;
     Thread t;
@@ -65,11 +65,6 @@ public class LoadPageController implements Initializable {
 
 
         int id;
-//        String pathAudio = "src/main/resources/com/iqtech/docfinder/sound/bipsound.m4a";
-//        File audioFile = new File(pathAudio);
-//        Media media = new Media(audioFile.toURI().toString());
-//
-//        MediaPlayer mediaPlayer= new MediaPlayer(media);
 
         public LoadPane(int id) {
             this.id = id;
@@ -85,7 +80,7 @@ public class LoadPageController implements Initializable {
 
                 Thread.sleep(4000);
 
-                URL resource = getClass().getResource("/com/iqtech/docfinder/sound/bipsound.m4a");
+                URL resource = getClass().getResource("/com/wudima/docApp/sound/bipsound.m4a");
                 if (resource == null) {
                     System.err.println("[ERROR] Аудіофайл не знайдено!");
                 } else {
@@ -103,7 +98,7 @@ public class LoadPageController implements Initializable {
 
                         try {
 
-                           FXMLLoader loader = new FXMLLoader(getClass().getResource("detailsPage.fxml"));
+                           FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/wudima/docApp/detailsPage.fxml"));
 
                                root = loader.load();
 
@@ -125,7 +120,9 @@ public class LoadPageController implements Initializable {
 
                        }catch (IOException e){
                            throw new RuntimeException(e);
-                       }
+                       } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
 
                     }
                 });

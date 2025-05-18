@@ -92,7 +92,7 @@ public class SettingsController implements Initializable{
 
         DocApplication.settings = AppSettings.load();
 
-        root = FXMLLoader.load(getClass().getResource("dataBase.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/dataBase.fxml"));
 
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

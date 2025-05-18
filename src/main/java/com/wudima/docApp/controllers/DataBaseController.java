@@ -108,11 +108,7 @@ public class DataBaseController implements Initializable {
         DataBaseHandler dbh = new DataBaseHandler();
 
 
-
-        dbh.getConnection();
-
         dbh.deleteAccount(clickedAccount(event));
-
 
 
         showBase();
@@ -146,11 +142,11 @@ public class DataBaseController implements Initializable {
         stage.show();
     }
 
-    public void switchToDetails(ActionEvent event) throws IOException {
+    public void switchToDetails(ActionEvent event) throws IOException, SQLException {
 
         int accId = clickedAccount(event);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("detailsPageMain.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/wudima/docApp/detailsPageMain.fxml"));
 
         root = loader.load();
 
@@ -173,7 +169,7 @@ public class DataBaseController implements Initializable {
 
         System.out.println("[switchToDLoad]:: id:"+accId);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("loadPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/wudima/docApp/loadPage.fxml"));
 
         root = loader.load();
 
@@ -264,7 +260,7 @@ public class DataBaseController implements Initializable {
 
     public void switchToSettings(ActionEvent event) throws IOException {
 
-        root = FXMLLoader.load(getClass().getResource("settingsPage.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/settingsPage.fxml"));
 
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

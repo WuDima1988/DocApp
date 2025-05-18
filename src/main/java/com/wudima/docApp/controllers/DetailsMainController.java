@@ -2,6 +2,7 @@ package com.wudima.docApp.controllers;
 
 import com.wudima.docApp.DocApplication;
 import com.wudima.docApp.account.Account;
+import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -100,9 +102,13 @@ public class DetailsMainController implements Initializable {
         docTypeField.setFocusTraversable(false);
     }
 
-    public void details(int id) throws FileNotFoundException {
+    public void details(int id) throws FileNotFoundException, SQLException {
 
-        pickedAccount = DocApplication.accountsList.stream().filter(account -> account.getId()==id).findFirst().orElseGet(Account::new);
+        DataBaseHandler dbh = new DataBaseHandler();
+
+
+
+        pickedAccount = dbh.findAccountById(id);
 
         nameField.setText(Optional.ofNullable(pickedAccount.getName()).orElse(""));
         surnameField.setText(Optional.ofNullable(pickedAccount.getSurname()).orElse(""));
@@ -122,10 +128,7 @@ public class DetailsMainController implements Initializable {
         if(pickedAccount.getPhoto()!= null) {
             Image img = new Image(new FileInputStream(pickedAccount.getPhoto()));
             photoImg.setImage(img);
-//            photoImg.setFitWidth(115);
-//            photoImg.setFitHeight(153);
             photoImg.setPreserveRatio(DocApplication.settings.isPhotoFit());
-//            photoImg.setSmooth(AppSettings.isPhotoFit());
         }
 
         if(pickedAccount.getDocumentFirstPage()!= null) {
@@ -142,13 +145,13 @@ public class DetailsMainController implements Initializable {
 
     }
 
-    public void switchToEditn(ActionEvent event) throws IOException {
+    public void switchToEditn(ActionEvent event) throws IOException, SQLException {
 
         int accId = pickedAccount.getId();
 
         System.out.println("[switchToEditn]:: id:"+accId);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("editPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/wudima/docApp/editPage.fxml"));
 
         root = loader.load();
 
@@ -164,7 +167,7 @@ public class DetailsMainController implements Initializable {
 
     public void switchToDataBase(ActionEvent event) throws IOException {
 
-        root = FXMLLoader.load(getClass().getResource("dataBase.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/dataBase.fxml"));
 
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

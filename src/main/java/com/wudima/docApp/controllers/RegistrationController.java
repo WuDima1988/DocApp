@@ -2,7 +2,6 @@ package com.wudima.docApp.controllers;
 
 
 import com.wudima.docApp.DocApplication;
-import com.wudima.docApp.account.Account;
 import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +24,6 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -174,8 +172,8 @@ public class RegistrationController implements Initializable {
         DataBaseHandler dataBaseHandler = new DataBaseHandler();
 
         try(Connection connection = dataBaseHandler.getConnection()){
-            System.out.println("Photo:"+photo+"\n"+"Doc1:"+DocumentFirstPage+"\n"+"Doc2:"+DocumentSecondPage);
-            dataBaseHandler.addClient(
+
+            dataBaseHandler.addAccount(
                     name,
                     surname,
                     birthPlace,
