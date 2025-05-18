@@ -73,6 +73,7 @@ public class DataBaseController implements Initializable {
     @FXML
     private TextField surnameSearch;
 
+    private ArrayList<Account> allAccounts;
 
     public Parent root;
     public Stage stage;
@@ -90,38 +91,37 @@ public class DataBaseController implements Initializable {
 
         showBase();
 
-//        setTableView();
-
         System.out.println("[DataBaseController]-[initialize] :: Base:");
-//        DocApplication.accountsList.forEach(System.out::println);
+
 
 
     }
 
-//    @FXML
-//    private void setTableView() {
-//        tableView.setItems(showBase());
-//    }
+
 
 
     @FXML
-    public void deleteAccount(ActionEvent event) {
+    public void deleteAccount(ActionEvent event) throws SQLException {
 
-//        System.out.println("[DataBaseController]-[deleteAccount] :: start");
-//
-//        Account deleteAcc = DocApplication.accountsList.stream().filter(acc->acc.getId()==clickedAccount(event)).findFirst().get();
-//
-//        DocApplication.accountsList.remove(deleteAcc);
-//
-//        DocApplication.writeToBase();
-//
-//        showBase();
-//
-//        System.out.println("[DataBaseController]-[deleteAccount] :: ends");
+        System.out.println("[DataBaseController]-[deleteAccount] :: start");
+
+        DataBaseHandler dbh = new DataBaseHandler();
+
+
+
+        dbh.getConnection();
+
+        dbh.deleteAccount(clickedAccount(event));
+
+
+
+        showBase();
+
+        System.out.println("[DataBaseController]-[deleteAccount] :: ends");
 
     }
 
-    public Long clickedAccount(ActionEvent event){
+    public Integer clickedAccount(ActionEvent event){
 
         Account clickAccount = tableView.getSelectionModel().getSelectedItem();
         if(clickAccount==null){
@@ -129,7 +129,8 @@ public class DataBaseController implements Initializable {
             alertPickAccount();
             throw new NoPickedAccountException("Account wasn't picked from the table ");
         }
-        Long id = clickAccount.getId();
+        int id = clickAccount.getId();
+        System.out.println("Picked Acc Id :" +id);
         return id;
     }
 
@@ -147,7 +148,7 @@ public class DataBaseController implements Initializable {
 
     public void switchToDetails(ActionEvent event) throws IOException {
 
-        Long accId = clickedAccount(event);
+        int accId = clickedAccount(event);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("detailsPageMain.fxml"));
 
@@ -168,7 +169,7 @@ public class DataBaseController implements Initializable {
 
     public void switchToDLoad(ActionEvent event) throws IOException {
 
-        Long accId = clickedAccount(event);
+        int accId = clickedAccount(event);
 
         System.out.println("[switchToDLoad]:: id:"+accId);
 
@@ -215,7 +216,6 @@ public class DataBaseController implements Initializable {
             tableView.setItems(list);
 
             connection.close();
-            System.out.println(connection.isClosed());
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

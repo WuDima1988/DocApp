@@ -36,7 +36,7 @@ public class LoadPageController implements Initializable {
     public Scene scene;
 //    Image mainLogo = new Image(getClass().getResourceAsStream(DocApplication.settings.getMainLogo()));
     Image mainLogo = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
-    Long id;
+    int id;
     Thread t;
     public Runnable runnableThread;
 
@@ -53,7 +53,7 @@ public class LoadPageController implements Initializable {
 
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         System.out.println("[setid]:: income id:"+id);
         this.id = id;
         t=new Thread(new LoadPane(id));
@@ -64,14 +64,14 @@ public class LoadPageController implements Initializable {
     class LoadPane implements Runnable{
 
 
-        Long id;
+        int id;
 //        String pathAudio = "src/main/resources/com/iqtech/docfinder/sound/bipsound.m4a";
 //        File audioFile = new File(pathAudio);
 //        Media media = new Media(audioFile.toURI().toString());
 //
 //        MediaPlayer mediaPlayer= new MediaPlayer(media);
 
-        public LoadPane(Long id) {
+        public LoadPane(int id) {
             this.id = id;
         }
 

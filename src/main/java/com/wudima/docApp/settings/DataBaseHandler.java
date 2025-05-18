@@ -37,7 +37,7 @@ public class DataBaseHandler {
 
     public void createTableIfNotExist(){
         String createTable = "CREATE TABLE IF NOT EXISTS "+Constant.TABLE_NAME
-                + " (id LONG PRIMARY KEY, "
+                + " (id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 +Constant.NAME+" TEXT, "
                 +Constant.SURNAME+" TEXT, "
                 +Constant.SEX+" TEXT, "
@@ -116,6 +116,17 @@ public class DataBaseHandler {
 
     }
 
+    public void deleteAccount(int id) throws SQLException {
+
+        String delete = "DELETE FROM " +Constant.TABLE_NAME+" WHERE id="+id;
+
+        PreparedStatement statement = connection.prepareStatement(delete);
+
+        int result = statement.executeUpdate();
+        System.out.println("[DataBaseHandler] - [deleteAccount] :: end"+result);
+        connection.close();
+    }
+
     public ArrayList<Account> getAllAccounts(){
 
         String getAll = "SELECT * FROM " + Constant.TABLE_NAME;
@@ -131,7 +142,8 @@ public class DataBaseHandler {
 
                 Account account = new Account();
 
-                account.setId(resultSet.getLong(1));
+                account.setId(resultSet.getInt(1));
+                System.out.println("Account Id: "+resultSet.getLong(1));
                 account.setName(resultSet.getString(2));
                 account.setSurname(resultSet.getString(3));
                 account.setSex(resultSet.getString(4));

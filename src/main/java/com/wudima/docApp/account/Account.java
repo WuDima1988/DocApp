@@ -1,15 +1,12 @@
 package com.wudima.docApp.account;
 
 import java.io.File;
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
-import java.util.Random;
 
 public class Account {
 
-    private Long id;
+    private int id;
     private String name;
     private String surname;
     private String birthPlace;
@@ -61,11 +58,11 @@ public class Account {
         return docBase= "no docs";
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

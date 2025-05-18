@@ -97,7 +97,7 @@ public class DetailsController implements Initializable {
         docTypeField.setFocusTraversable(false);
     }
 
-    public void details(Long id) throws FileNotFoundException {
+    public void details(int id) throws FileNotFoundException {
 
         Account pickedAccount = DocApplication.accountsList.stream().filter(account -> account.getId()==id).findFirst().orElseGet(Account::new);
 
