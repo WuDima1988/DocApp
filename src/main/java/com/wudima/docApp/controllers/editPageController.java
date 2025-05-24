@@ -3,6 +3,7 @@ package com.wudima.docApp.controllers;
 
 import com.wudima.docApp.DocApplication;
 import com.wudima.docApp.account.Account;
+import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +25,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -94,9 +97,13 @@ public class editPageController implements Initializable {
         sexField.getItems().addAll(sexVariations);
     }
 
-    public void details(int id) throws FileNotFoundException {
+    public void details(int id) throws FileNotFoundException, SQLException {
 
-        pickedAccount = DocApplication.accountsList.stream().filter(account -> account.getId()==id).findFirst().orElseGet(Account::new);
+        DataBaseHandler dbh = new DataBaseHandler();
+
+        dbh.getConnection();
+
+        pickedAccount = dbh.findAccountById(id);
 
         nameField.setText(Optional.ofNullable(pickedAccount.getName()).orElse(""));
         surnameField.setText(Optional.ofNullable(pickedAccount.getSurname()).orElse(""));
@@ -159,56 +166,75 @@ public class editPageController implements Initializable {
 
     }
 
-    public void save(ActionEvent event){
+    public void save(ActionEvent event) throws SQLException, IOException {
 
+        System.out.println("PickedAccountID: "+pickedAccount.getId());
 
-        pickedAccount.setName(Optional.of(nameField.getText()).orElseGet(()->""));
-        pickedAccount.setSurname(Optional.of(surnameField.getText()).orElseGet(()->""));
+        String name = Optional.of(nameField.getText()).orElseGet(()->"");
+        String surname = Optional.of(surnameField.getText()).orElseGet(()->"");
+        String sex="";
         if(sexField.getValue()!=null){
-            pickedAccount.setSex(sexField.getValue());
-        }
-        if(datePicker.getValue()!=null){
-            pickedAccount.setBirthDate(datePicker.getValue());
+            sex = sexField.getValue();
         }
 
-        pickedAccount.setBirthPlace(Optional.of(birthPlaceField.getText()).orElseGet(()->""));
-        pickedAccount.setDocNumber(Optional.of(docNumberField.getText()).orElseGet(()->""));
+        LocalDate dateBirth = datePicker.getValue();
+
+        String birthPlace = birthPlaceField.getText();
+        String docNumber = docNumberField.getText();
+
+        Long idNumber;
         if(!idField.getText().isEmpty()){
-            pickedAccount.setIdNumber(Long.parseLong(idField.getText()));
+            idNumber = Long.parseLong(idField.getText());
+        }else{
+            idNumber= 0L;
         }
-        pickedAccount.setDocType(Optional.of(docTypeField.getText()).orElseGet(()->""));
+        String docType = docTypeField.getText();
 
+        String photo = null;
         if(filePhoto !=null){
-            pickedAccount.setPhoto(filePhoto);
+            photo = filePhoto.getAbsolutePath();
             System.out.println("[RegistrationController] - [save] : filePhoto set");
         }
 
+        System.out.println("Photo:" + photo);
+
+        String DocumentFirstPage = null;
         if(fileFirstPage !=null){
-            pickedAccount.setDocumentFirstPage(fileFirstPage);
+            DocumentFirstPage = fileFirstPage.getAbsolutePath();
             System.out.println("[RegistrationController] - [save] : fileFirstPage set");
         }
 
+        String DocumentSecondPage = null;
         if(fileSecondPage !=null){
-            pickedAccount.setDocumentSecondPage(fileSecondPage);
+            DocumentSecondPage = fileSecondPage.getAbsolutePath();
             System.out.println("[RegistrationController] - [save] : fileSecondPage set");
         }
 
+        DataBaseHandler dataBaseHandler = new DataBaseHandler();
+        dataBaseHandler.changeAccount(pickedAccount.getId(),
+                name,
+                surname,
+                birthPlace,
+                sex,
+                docNumber,
+                idNumber,
+                docType,
+                dateBirth,
+                DocumentFirstPage,
+                DocumentSecondPage,
+                photo);
+
         System.out.println("[RegistrationController] - [save] : new Account was made and setted");
-
-        int listId = DocApplication.accountsList.indexOf(pickedAccount);
-
-        DocApplication.accountsList.set(listId, pickedAccount);
-
-        DocApplication.writeToBase();
 
         resultLabel.setText("Saved");
 
         System.out.println("[RegistrationController] - [save] : new Account was saved");
+        switchToDataBase(event);
     }
 
     public void switchToDataBase(ActionEvent event) throws IOException {
 
-        root = FXMLLoader.load(getClass().getResource("dataBase.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/dataBase.fxml"));
 
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

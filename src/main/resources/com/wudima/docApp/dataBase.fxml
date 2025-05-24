@@ -34,7 +34,7 @@
          <font>
             <Font name="System Bold" size="23.0" />
          </font></Button>
-      <Button fx:id="searchBtn1" layoutX="394.0" layoutY="79.0" mnemonicParsing="false" onAction="#setTableView" text="Cancel" />
+      <Button fx:id="searchBtn1" layoutX="394.0" layoutY="79.0" mnemonicParsing="false" text="Cancel" />
       <Button layoutX="712.0" layoutY="23.0" mnemonicParsing="false" onAction="#switchToSettings" prefHeight="35.0" prefWidth="42.0">
          <graphic>
             <ImageView fitHeight="23.0" fitWidth="21.0" onDragDetected="#switchToSettings">

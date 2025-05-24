@@ -3,6 +3,7 @@ package com.wudima.docApp.controllers;
 
 import com.wudima.docApp.DocApplication;
 import com.wudima.docApp.account.Account;
+import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -61,8 +63,7 @@ public class DetailsController implements Initializable {
     @FXML
     private ImageView doc2Img;
 
-//    Image logoImg = new Image(getClass().getResourceAsStream(DocApplication.mainLogo));
-Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+    Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
 
 
 
@@ -98,11 +99,13 @@ Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLog
         docTypeField.setFocusTraversable(false);
     }
 
-    public void details(int id) throws FileNotFoundException {
+    public void details(int id) throws FileNotFoundException, SQLException {
 
-        Account pickedAccount = DocApplication.accountsList.stream().filter(account -> account.getId()==id).findFirst().orElseGet(Account::new);
+        DataBaseHandler dbh = new DataBaseHandler();
 
 
+
+        Account pickedAccount = dbh.findAccountById(id);
 
         nameField.setText(Optional.ofNullable(pickedAccount.getName()).orElse(""));
         surnameField.setText(Optional.ofNullable(pickedAccount.getSurname()).orElse(""));
@@ -122,10 +125,7 @@ Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLog
         if(pickedAccount.getPhoto()!= null) {
             Image img = new Image(new FileInputStream(pickedAccount.getPhoto()));
             photoImg.setImage(img);
-//            photoImg.setFitWidth(115);
-//            photoImg.setFitHeight(153);
             photoImg.setPreserveRatio(DocApplication.settings.isPhotoFit());
-//            photoImg.setSmooth(true);
         }
 
         if(pickedAccount.getDocumentFirstPage()!= null) {
@@ -139,12 +139,11 @@ Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLog
             doc2Img.setImage(img2);
             doc2Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
         }
-
     }
 
     public void switchToDataBase(ActionEvent event) throws IOException {
 
-        root = FXMLLoader.load(getClass().getResource("dataBase.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/dataBase.fxml"));
 
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
