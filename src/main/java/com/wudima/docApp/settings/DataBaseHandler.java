@@ -1,6 +1,6 @@
 package com.wudima.docApp.settings;
 
-import com.wudima.docApp.account.Account;
+import com.wudima.docApp.Entity.Account;
 
 import java.io.File;
 import java.sql.*;

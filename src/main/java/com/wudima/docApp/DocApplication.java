@@ -1,6 +1,6 @@
 package com.wudima.docApp;
 
-import com.wudima.docApp.account.Account;
+import com.wudima.docApp.Entity.Account;
 import com.wudima.docApp.settings.AppSettings;
 import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.application.Application;
@@ -12,8 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;

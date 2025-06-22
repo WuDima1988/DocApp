@@ -2,7 +2,7 @@ package com.wudima.docApp.controllers;
 
 
 import com.wudima.docApp.DocApplication;
-import com.wudima.docApp.account.Account;
+import com.wudima.docApp.Entity.Account;
 import com.wudima.docApp.exceptions.NoPickedAccountException;
 import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.collections.ObservableList;
@@ -24,7 +24,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class DataBaseController implements Initializable {
 

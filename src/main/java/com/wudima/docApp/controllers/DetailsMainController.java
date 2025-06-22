@@ -1,7 +1,7 @@
 package com.wudima.docApp.controllers;
 
 import com.wudima.docApp.DocApplication;
-import com.wudima.docApp.account.Account;
+import com.wudima.docApp.Entity.Account;
 import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

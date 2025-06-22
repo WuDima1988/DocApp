@@ -1,11 +1,19 @@
-package com.wudima.docApp.account;
+package com.wudima.docApp.Entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Entity
 public class Account {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String surname;
