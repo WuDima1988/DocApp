@@ -103,11 +103,14 @@ public class DetailsController implements Initializable {
 
     public void details(int id) throws FileNotFoundException, SQLException {
 
+        System.out.println("[DetailsController] - [details] : start / int id = "+id );
+
         DataBaseHandler dbh = new DataBaseHandler();
 
-
-
+        System.out.println("[DetailsController] - [details] : find pickedAccount " );
         Account pickedAccount = dbh.findAccountById(id);
+
+        System.out.println("[DetailsController] - [details] : set all fields " );
 
         nameField.setText(Optional.ofNullable(pickedAccount.getName()).orElse(""));
         surnameField.setText(Optional.ofNullable(pickedAccount.getSurname()).orElse(""));
@@ -141,6 +144,8 @@ public class DetailsController implements Initializable {
             doc2Img.setImage(img2);
             doc2Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
         }
+
+        System.out.println("[DetailsController] - [details] : end");
     }
 
     public void switchToDataBase(ActionEvent event) throws IOException {
