@@ -198,12 +198,14 @@ public class RegistrationController implements Initializable {
 
         System.out.println("[RegistrationController] - [save] : new Account was saved");
 
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         switchToDataBase(event);
     }
 
     public void switchToDataBase(ActionEvent event) throws IOException {
+
+        System.out.println("[RegistrationController] - [switchToDataBase] : start");
 
         root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/dataBase.fxml"));
 
@@ -211,6 +213,8 @@ public class RegistrationController implements Initializable {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+
+        System.out.println("[RegistrationController] - [switchToDataBase] : end");
     }
 
 
