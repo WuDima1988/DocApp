@@ -257,11 +257,11 @@ public class DataBaseHandler {
                 account.setDocType(resultSet.getString(8));
                 account.setIdNumber(resultSet.getLong(9));
                 String photoPath = resultSet.getString(10);
-                System.out.println("PhotoPath: "+photoPath);
+
                 account.setPhoto(photoPath != null && !photoPath.isBlank() ? new File(photoPath) : null);
 
                 String doc1Path = resultSet.getString(11);
-                System.out.println("doc1Path: "+doc1Path);
+
                 account.setDocumentFirstPage(doc1Path != null && !doc1Path.isBlank() ? new File(doc1Path) : null);
 
                 String doc2Path = resultSet.getString(12);

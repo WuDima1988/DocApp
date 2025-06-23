@@ -134,13 +134,13 @@ public class DetailsController implements Initializable {
         }
 
         if(pickedAccount.getDocumentFirstPage()!= null) {
-            Image img1 = new Image(new FileInputStream(pickedAccount.getDocumentFirstPage()));
+            Image img1 = new Image(new FileInputStream(new File(pickedAccount.getDocumentFirstPage().getAbsolutePath())));
             doc1Img.setImage(img1);
             doc1Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
         }
 
         if(pickedAccount.getDocumentSecondPage()!= null) {
-            Image img2 = new Image(new FileInputStream(pickedAccount.getDocumentSecondPage()));
+            Image img2 = new Image(new FileInputStream(new File(pickedAccount.getDocumentSecondPage().getAbsolutePath())));
             doc2Img.setImage(img2);
             doc2Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
         }
