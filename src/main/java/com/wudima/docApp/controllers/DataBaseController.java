@@ -252,39 +252,6 @@ public class DataBaseController implements Initializable {
 
     }
 
-    private ObservableList<Account> showBaseBySearch() {
-
-        String name = Optional.of(nameSearch.getText()).orElseGet(()->"").toLowerCase();
-        String surname = Optional.of(surnameSearch.getText()).orElseGet(()->"").toLowerCase();
-
-        tableView.getItems().removeAll(tableView.getItems());
-
-        System.out.println("[DataBaseController] - [showBase]:run");
-
-        ObservableList<Account> list = tableView.getItems();
-
-        ArrayList<Account> accList=new ArrayList<>();
-
-//        if(!name.isEmpty() && surname.isEmpty()){
-//            accList = DocApplication.accountsList.stream().filter(acc->acc.getName().toLowerCase().equals(name)).collect(Collectors.toCollection(ArrayList::new));
-//        }
-//        else if (name.isEmpty() && !surname.isEmpty()) {
-//            accList = DocApplication.accountsList.stream().filter(acc->acc.getSurname().toLowerCase().equals(surname)).collect(Collectors.toCollection(ArrayList::new));
-//        }
-//        else if (!name.isEmpty() && !surname.isEmpty()) {
-//            accList = DocApplication.accountsList.stream().filter(acc->acc.getName().toLowerCase().equals(surname)&&acc.getSurname().toLowerCase().equals(surname)).collect(Collectors.toCollection(ArrayList::new));
-//        } else if (name.isEmpty() && surname.isEmpty()) {
-//            return showBase();
-//        }
-
-
-        list.addAll(accList);
-
-        System.out.println("[DataBaseController] - [showBase]:end");
-
-        return list;
-    }
-
 
     public void switchToSettings(ActionEvent event) throws IOException {
 
