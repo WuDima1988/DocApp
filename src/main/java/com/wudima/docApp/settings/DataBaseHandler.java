@@ -196,7 +196,7 @@ public class DataBaseHandler {
 
         String birthDateStr = resultSet.getString(6);
         if (birthDateStr != null && !birthDateStr.isBlank()) {
-            account.setBirthDate(LocalDate.parse(birthDateStr));
+            account.setBirthDate(LocalDate.parse(birthDateStr,DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         } else {
             account.setBirthDate(null); // або значення за замовчуванням
         }

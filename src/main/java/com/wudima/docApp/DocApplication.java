@@ -33,6 +33,7 @@ public class DocApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        System.out.println("[DocApplication]::[start]--start");
 
         DataBaseHandler dataBaseHandler = new DataBaseHandler();
         try(Connection connection = dataBaseHandler.getConnection()){
@@ -65,16 +66,22 @@ public class DocApplication extends Application {
 
         stage.isAlwaysOnTop();
         stage.show();
+        System.out.println("[DocApplication]::[start]--end");
     }
 
     public static void main(String[] args) throws IOException {
 
+        System.out.println("[DocApplication]::[main]--start");
+
         launch();
+
+        System.out.println("[DocApplication]::[main]--end");
 
     }
 
 
     public static String getLogoPath(){
+        System.out.println("[DocApplication]::[getLogoPath]--start");
         return logoPath;
     }
 

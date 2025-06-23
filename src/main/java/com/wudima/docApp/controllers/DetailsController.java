@@ -16,9 +16,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
@@ -123,7 +125,7 @@ public class DetailsController implements Initializable {
 
 
         if(pickedAccount.getPhoto()!= null) {
-            Image img = new Image(new FileInputStream(pickedAccount.getPhoto()));
+            Image img = new Image(new FileInputStream(new File( pickedAccount.getPhoto().getAbsolutePath())));
             photoImg.setImage(img);
             photoImg.setPreserveRatio(DocApplication.settings.isPhotoFit());
         }
