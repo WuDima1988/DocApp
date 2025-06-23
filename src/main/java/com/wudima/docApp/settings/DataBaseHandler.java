@@ -7,6 +7,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DataBaseHandler {
 
@@ -239,23 +240,22 @@ public class DataBaseHandler {
                 Account account = new Account();
 
                 account.setId(resultSet.getInt(1));
-                System.out.println("Account Id: "+resultSet.getLong(1));
                 account.setName(resultSet.getString(2));
                 account.setSurname(resultSet.getString(3));
                 account.setSex(resultSet.getString(4));
                 account.setBirthPlace(resultSet.getString(5));
 
-                String birthDateStr = resultSet.getString(6);
-                if (birthDateStr != null && !birthDateStr.isBlank()) {
-                    account.setBirthDate(LocalDate.parse(birthDateStr,DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-                } else {
-                    account.setBirthDate(null); // або значення за замовчуванням
-                }
-
-
-                account.setDocNumber(resultSet.getString(7));
-                account.setDocType(resultSet.getString(8));
-                account.setIdNumber(resultSet.getLong(9));
+//                String birthDateStr = resultSet.getString(6);
+//                if (birthDateStr != null && !birthDateStr.isBlank()) {
+//                    account.setBirthDate(LocalDate.parse(birthDateStr,DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+//                } else {
+//                    account.setBirthDate(null); // або значення за замовчуванням
+//                }
+//
+//
+//                account.setDocNumber(resultSet.getString(7));
+//                account.setDocType(resultSet.getString(8));
+//                account.setIdNumber(resultSet.getLong(9));
                 String photoPath = resultSet.getString(10);
 
                 account.setPhoto(photoPath != null && !photoPath.isBlank() ? new File(photoPath) : null);
@@ -274,5 +274,74 @@ public class DataBaseHandler {
         }
 
         return allAccounts;
+    }
+
+    public ArrayList<Account> getAccountsBySearch(String name, String surname, String birthPlace){
+
+        ArrayList<Account> allAccountsBySearch = new ArrayList<>();
+
+        StringBuilder queryBuilder = new StringBuilder("SELECT * FROM " + Constant.TABLE_NAME);
+        List<String> conditions = new ArrayList<>();
+        List<Object> parameters = new ArrayList<>();
+
+        if (name != null && !name.isBlank()) {
+            conditions.add("name LIKE ?");
+            parameters.add("%" + name + "%");
+        }
+        if (surname != null && !surname.isBlank()) {
+            conditions.add("surname LIKE ?");
+            parameters.add("%" + surname + "%");
+        }
+        if (birthPlace != null && !birthPlace.isBlank()) {
+            conditions.add("birth_place LIKE ?");
+            parameters.add("%" + birthPlace + "%");
+        }
+
+        if (!conditions.isEmpty()) {
+            queryBuilder.append(" WHERE ");
+            queryBuilder.append(String.join(" AND ", conditions));
+        }
+
+        String finalQuery = queryBuilder.toString();
+
+        try (PreparedStatement preparedStatementstmt = connection.prepareStatement(finalQuery)) {
+
+            for (int i = 0; i < parameters.size(); i++) {
+                preparedStatementstmt.setObject(i + 1, parameters.get(i));
+            }
+
+            ResultSet resultSet = preparedStatementstmt.executeQuery();
+
+            while (resultSet.next()) {
+                Account account = new Account();
+
+                account.setId(resultSet.getInt(1));
+                account.setName(resultSet.getString(2));
+                account.setSurname(resultSet.getString(3));
+                account.setSex(resultSet.getString(4));
+                account.setBirthPlace(resultSet.getString(5));
+
+                String photoPath = resultSet.getString(10);
+
+                account.setPhoto(photoPath != null && !photoPath.isBlank() ? new File(photoPath) : null);
+
+                String doc1Path = resultSet.getString(11);
+
+                account.setDocumentFirstPage(doc1Path != null && !doc1Path.isBlank() ? new File(doc1Path) : null);
+
+                String doc2Path = resultSet.getString(12);
+                account.setDocumentSecondPage(doc2Path != null && !doc2Path.isBlank() ? new File(doc2Path) : null);
+
+                allAccountsBySearch.add(account);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // або логування
+        }
+
+
+
+        return allAccountsBySearch;
+
     }
 }

@@ -18,7 +18,7 @@ public class AppSettings {
     private String progName = "Default Name";
     private  boolean photoFit =true;
     private  boolean documentsFit =true;
-//    private String mainLogo = "imgs/MainLogo.png";
+
     private File mainLogo = new File("src/main/resources/com/wudima/docApp/imgs/loadImg 2.png");
 
     public String getProgName() {

@@ -72,6 +72,9 @@ public class DataBaseController implements Initializable {
     @FXML
     private TextField surnameSearch;
 
+    @FXML
+    private TextField birthPlaceField;
+
     private ArrayList<Account> allAccounts;
 
     public Parent root;
@@ -222,7 +225,31 @@ public class DataBaseController implements Initializable {
 
     public void search(){
 
-        tableView.setItems(showBaseBySearch());
+        String name = Optional.of(nameSearch.getText()).orElseGet(()->"").toLowerCase();
+        String surname = Optional.of(surnameSearch.getText()).orElseGet(()->"").toLowerCase();
+        String birthPlace = Optional.of(birthPlaceField.getText()).orElseGet(()->"").toLowerCase();
+
+        tableView.getItems().removeAll(tableView.getItems());
+
+        DataBaseHandler dataBaseHandler = new DataBaseHandler();
+
+        ObservableList<Account> list = tableView.getItems();
+
+        if(list.size()>0){
+            list.removeAll(tableView.getItems());
+        }
+
+        try{
+            Connection connection = dataBaseHandler.getConnection();
+            list.addAll(dataBaseHandler.getAccountsBySearch(name,surname,birthPlace));
+            tableView.setItems(list);
+
+            connection.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private ObservableList<Account> showBaseBySearch() {

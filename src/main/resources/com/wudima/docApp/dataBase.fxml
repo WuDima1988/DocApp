@@ -13,7 +13,7 @@
    <children>
       <Button fx:id="registerBtn" layoutX="671.0" layoutY="233.0" mnemonicParsing="false" onAction="#switchToRegistration" text="Register" />
       <TextField fx:id="nameSearch" layoutX="301.0" layoutY="32.0" prefHeight="26.0" prefWidth="148.0" promptText="name" />
-      <TextField fx:id="courseField" layoutX="484.0" layoutY="32.0" promptText="birthPlace" />
+      <TextField fx:id="birthPlaceField" layoutX="484.0" layoutY="32.0" promptText="birthPlace" />
       <TextField fx:id="surnameSearch" layoutX="114.0" layoutY="32.0" prefHeight="26.0" prefWidth="148.0" promptText="surname" />
       <Button fx:id="searchBtn" layoutX="302.0" layoutY="79.0" mnemonicParsing="false" onAction="#search" text="Search">
          <font>

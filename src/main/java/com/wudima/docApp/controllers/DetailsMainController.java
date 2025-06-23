@@ -104,14 +104,14 @@ public class DetailsMainController implements Initializable {
 
     public void details(int id) throws FileNotFoundException, SQLException {
 
-        System.out.println("[DetailsController] - [details] : start / int id = "+id );
+        System.out.println("[DetailsMainController] - [details] : start / int id = "+id );
 
         DataBaseHandler dbh = new DataBaseHandler();
 
-        System.out.println("[DetailsController] - [details] : find pickedAccount " );
+        System.out.println("[DetailsMainController] - [details] : find pickedAccount " );
         pickedAccount = dbh.findAccountById(id);
 
-        System.out.println("[DetailsController] - [details] : set all fields " );
+        System.out.println("[DetailsMainController] - [details] : set all fields " );
         nameField.setText(Optional.ofNullable(pickedAccount.getName()).orElse(""));
         surnameField.setText(Optional.ofNullable(pickedAccount.getSurname()).orElse(""));
         sexField.setText(Optional.ofNullable(pickedAccount.getSex()).orElse(("")));
@@ -145,7 +145,7 @@ public class DetailsMainController implements Initializable {
             doc2Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
         }
 
-        System.out.println("[DetailsController] - [details] : end");
+        System.out.println("[DetailsMainController] - [details] : end");
 
     }
 
@@ -153,7 +153,7 @@ public class DetailsMainController implements Initializable {
 
         int accId = pickedAccount.getId();
 
-        System.out.println("[switchToEditn]:: id:"+accId);
+        System.out.println("[DetailsMainController] - [switchToEditn]:: id:"+accId);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/wudima/docApp/editPage.fxml"));
 
