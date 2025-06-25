@@ -120,54 +120,57 @@ public class editPageController implements Initializable {
 
         if(pickedAccount.getPhoto()!= null) {
             fileNamePhoto.setText(pickedAccount.getPhoto().getName());
+            filePhoto = pickedAccount.getPhoto();
         }
 
         if(pickedAccount.getDocumentFirstPage()!= null) {
             fileNameFirstPage.setText(pickedAccount.getDocumentFirstPage().getName());
+            fileFirstPage = pickedAccount.getDocumentFirstPage();
         }
 
         if(pickedAccount.getDocumentSecondPage()!= null) {
             fileNameSecondPage.setText(pickedAccount.getDocumentSecondPage().getName());
+            fileSecondPage = pickedAccount.getDocumentSecondPage();
         }
 
     }
 
     public void fileChoosePhoto() {
 
-        System.out.println("[RegistrationController] - [fileChoosePhoto] : start");
+        System.out.println("[editPageController] - [fileChoosePhoto] : start");
 
         filePhoto = fileChooser.showOpenDialog(new Stage());
         fileNamePhoto.setText(filePhoto.getName());
 
-        System.out.println("[RegistrationController] - [fileChoosePhoto] : end");
+        System.out.println("[editPageController] - [fileChoosePhoto] : end");
 
     }
 
     public void fileChooseFirstPage() {
 
-        System.out.println("[RegistrationController] - [fileChooseFirstPage] : start");
+        System.out.println("[editPageController] - [fileChooseFirstPage] : start");
 
         fileFirstPage = fileChooser.showOpenDialog(new Stage());
         fileNameFirstPage.setText(fileFirstPage.getName());
 
-        System.out.println("[RegistrationController] - [fileChooseFirstPage] : end");
+        System.out.println("[editPageController] - [fileChooseFirstPage] : end");
 
     }
 
     public void fileChooseSecondPage() {
 
-        System.out.println("[RegistrationController] - [fileChooseSecondPage] : start");
+        System.out.println("[editPageController] - [fileChooseSecondPage] : start");
 
         fileSecondPage = fileChooser.showOpenDialog(new Stage());
         fileNameSecondPage.setText(fileSecondPage.getName());
 
-        System.out.println("[RegistrationController] - [fileChooseSecondPage] : end");
+        System.out.println("[editPageController] - [fileChooseSecondPage] : end");
 
     }
 
     public void save(ActionEvent event) throws SQLException, IOException {
 
-        System.out.println("PickedAccountID: "+pickedAccount.getId());
+        System.out.println("[editPageController] - [save] : PickedAccountID: "+pickedAccount.getId());
 
         String name = Optional.of(nameField.getText()).orElseGet(()->"");
         String surname = Optional.of(surnameField.getText()).orElseGet(()->"");
@@ -192,7 +195,7 @@ public class editPageController implements Initializable {
         String photo = null;
         if(filePhoto !=null){
             photo = filePhoto.getAbsolutePath();
-            System.out.println("[RegistrationController] - [save] : filePhoto set");
+            System.out.println("[editPageController] - [save] : filePhoto set");
         }
 
         System.out.println("Photo:" + photo);
@@ -200,13 +203,13 @@ public class editPageController implements Initializable {
         String DocumentFirstPage = null;
         if(fileFirstPage !=null){
             DocumentFirstPage = fileFirstPage.getAbsolutePath();
-            System.out.println("[RegistrationController] - [save] : fileFirstPage set");
+            System.out.println("[editPageController] - [save] : fileFirstPage set");
         }
 
         String DocumentSecondPage = null;
         if(fileSecondPage !=null){
             DocumentSecondPage = fileSecondPage.getAbsolutePath();
-            System.out.println("[RegistrationController] - [save] : fileSecondPage set");
+            System.out.println("[editPageController] - [save] : fileSecondPage set");
         }
 
         DataBaseHandler dataBaseHandler = new DataBaseHandler();
@@ -239,6 +242,24 @@ public class editPageController implements Initializable {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    public void deletePhoto(ActionEvent event){
+        filePhoto = null;
+        fileNamePhoto.setText(null);
+    }
+
+    @FXML
+    public void deleteFirstPage(ActionEvent event){
+        fileFirstPage = null;
+        fileNamePhoto.setText(null);
+    }
+
+    @FXML
+    public void deleteSecondPage(ActionEvent event){
+        fileSecondPage = null;
+        fileNamePhoto.setText(null);
     }
 
 

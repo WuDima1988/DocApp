@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 public class Account {
@@ -50,9 +51,9 @@ public class Account {
 
         if(photo!=null && documentFirstPage!=null && documentSecondPage!=null){
             return docBase="all docs";
-        } else if (photo==null&&documentFirstPage!=null && documentSecondPage!=null) {
+        } else if (photo==null &&documentFirstPage!=null && documentSecondPage!=null) {
             return docBase = "no photo";
-        }else if (photo!=null&&documentFirstPage==null && documentSecondPage==null) {
+        }else if (photo!=null && photo.exists() &&documentFirstPage==null && documentSecondPage==null) {
             return docBase = "only photo";
         }else if (photo!=null&&documentFirstPage!=null && documentSecondPage==null) {
             return docBase = "photo/first page";
