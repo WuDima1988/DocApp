@@ -43,7 +43,7 @@ public class DataBaseHandler {
                 +Constant.BIRTHPLACE+ " TEXT, "
                 +Constant.DOCNUMBER+ " TEXT, "
                 +Constant.DOCTYPE+ " TEXT, "
-                +Constant.IDNumber+ " LONG, "
+                +Constant.IDNumber+ " TEXT, "
                 +Constant.PHOTO+ " TEXT, "
                 +Constant.DocFirstPage+" TEXT, "
                 +Constant.DocumentSecondPage+" TEXT "
@@ -65,7 +65,7 @@ public class DataBaseHandler {
             String birthPlace,
             String sex,
             String docNumber,
-            Long idNumber,
+            String idNumber,
             String docType,
             LocalDate birthDate,
             String documentFirstPage,
@@ -98,7 +98,7 @@ public class DataBaseHandler {
             }
             preparedStatement.setString(6,docNumber);
             preparedStatement.setString(7,docType);
-            preparedStatement.setLong(8,idNumber);
+            preparedStatement.setString(8,idNumber);
             preparedStatement.setString(9,photo);
             preparedStatement.setString(10, documentFirstPage);
             preparedStatement.setString(11,documentSecondPage);
@@ -132,7 +132,7 @@ public class DataBaseHandler {
                               String birthPlace,
                               String sex,
                               String docNumber,
-                              Long idNumber,
+                              String idNumber,
                               String docType,
                               LocalDate birthDate,
                               String documentFirstPage,
@@ -159,7 +159,7 @@ public class DataBaseHandler {
         }
         preparedStatement.setString(6,docNumber);
         preparedStatement.setString(7,docType);
-        preparedStatement.setLong(8,idNumber);
+        preparedStatement.setString(8,idNumber);
         preparedStatement.setString(9,photo);
         preparedStatement.setString(10, documentFirstPage);
         preparedStatement.setString(11,documentSecondPage);
@@ -204,7 +204,7 @@ public class DataBaseHandler {
 
         account.setDocNumber(resultSet.getString(7));
         account.setDocType(resultSet.getString(8));
-        account.setIdNumber(resultSet.getLong(9));
+        account.setIdNumber(resultSet.getString(9));
         String photoPath = resultSet.getString(10);
         System.out.println("PhotoPath: "+photoPath);
         account.setPhoto(photoPath != null && !photoPath.isBlank() ? new File(photoPath) : null);

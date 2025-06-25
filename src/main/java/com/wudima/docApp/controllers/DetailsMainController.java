@@ -51,13 +51,6 @@ public class DetailsMainController implements Initializable {
     @FXML
     private TextField docTypeField;
 
-
-
-
-
-
-
-
     @FXML
     private ImageView mainLogo;
     @FXML
@@ -122,7 +115,7 @@ public class DetailsMainController implements Initializable {
                         .orElse("")
         );
         docNumberField.setText(Optional.ofNullable(pickedAccount.getDocNumber()).orElse(""));
-        idField.setText(Optional.ofNullable(pickedAccount.getIdNumber()).map(i->i.toString()).orElse(("")));
+        idField.setText(Optional.ofNullable(pickedAccount.getIdNumber()).orElse(("")));
         docTypeField.setText(Optional.ofNullable(pickedAccount.getDocType()).orElse(""));
 
 

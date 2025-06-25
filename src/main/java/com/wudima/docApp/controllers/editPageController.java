@@ -184,12 +184,8 @@ public class editPageController implements Initializable {
         String birthPlace = birthPlaceField.getText();
         String docNumber = docNumberField.getText();
 
-        Long idNumber;
-        if(!idField.getText().isEmpty()){
-            idNumber = Long.parseLong(idField.getText());
-        }else{
-            idNumber= 0L;
-        }
+        String idNumber = idField.getText();
+
         String docType = docTypeField.getText();
 
         String photo = null;

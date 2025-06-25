@@ -21,7 +21,7 @@ public class Account {
     private String birthPlace;
     private String sex;
     private String docNumber;
-    private Long idNumber;
+    private String idNumber;
     private String docType;
     private LocalDate birthDate;
     private File documentFirstPage;
@@ -33,7 +33,7 @@ public class Account {
 
     }
 
-    public Account(String name, String surname, String birthPlace, String sex, String docNumber, Long idNumber, String docType, LocalDate birthDate, File documentFirstPage, File documentSecondPage, File photo) {
+    public Account(String name, String surname, String birthPlace, String sex, String docNumber, String idNumber, String docType, LocalDate birthDate, File documentFirstPage, File documentSecondPage, File photo) {
         this.name = name;
         this.surname = surname;
         this.birthPlace = birthPlace;
@@ -147,11 +147,11 @@ public class Account {
         this.docNumber = docNumber;
     }
 
-    public Long getIdNumber() {
+    public String getIdNumber() {
         return idNumber;
     }
 
-    public void setIdNumber(Long idNumber) {
+    public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
     }
 

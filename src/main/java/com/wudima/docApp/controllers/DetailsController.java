@@ -122,7 +122,7 @@ public class DetailsController implements Initializable {
                         .orElse("")
         );
         docNumberField.setText(Optional.ofNullable(pickedAccount.getDocNumber()).orElse(""));
-        idField.setText(Optional.ofNullable(pickedAccount.getIdNumber()).map(i->i.toString()).orElse(("")));
+        idField.setText(Optional.ofNullable(pickedAccount.getIdNumber()).orElse(("")));
         docTypeField.setText(Optional.ofNullable(pickedAccount.getDocType()).orElse(""));
 
 
