@@ -8,13 +8,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,7 +71,7 @@ public class DetailsController implements Initializable {
     Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
 
 
-
+    private Stage zoomStage;
     public Parent root;
     public Stage stage;
     public Scene scene;
@@ -99,6 +102,15 @@ public class DetailsController implements Initializable {
         idField.setFocusTraversable(false);
         docTypeField.setEditable(false);
         docTypeField.setFocusTraversable(false);
+
+        photoImg.setOnMouseEntered(event -> showZoomedImage(photoImg));
+        photoImg.setOnMouseExited(event -> hideZoomedImage());
+
+        doc1Img.setOnMouseEntered(event -> showZoomedImage(doc1Img));
+        doc1Img.setOnMouseExited(event -> hideZoomedImage());
+
+        doc2Img.setOnMouseEntered(event -> showZoomedImage(doc2Img));
+        doc2Img.setOnMouseExited(event -> hideZoomedImage());
     }
 
     public void details(int id) throws FileNotFoundException, SQLException {
@@ -128,21 +140,31 @@ public class DetailsController implements Initializable {
 
 
         if(pickedAccount.getPhoto()!= null) {
-            Image img = new Image(new FileInputStream(new File( pickedAccount.getPhoto().getAbsolutePath())));
+            Image img = new Image(new FileInputStream(pickedAccount.getPhoto()));
             photoImg.setImage(img);
             photoImg.setPreserveRatio(DocApplication.settings.isPhotoFit());
+        }else{
+            Image img = new Image(new FileInputStream(DocApplication.settings.getNoPhotoImg()));
+            photoImg.setImage(img);
+
         }
 
         if(pickedAccount.getDocumentFirstPage()!= null) {
-            Image img1 = new Image(new FileInputStream(new File(pickedAccount.getDocumentFirstPage().getAbsolutePath())));
+            Image img1 = new Image(new FileInputStream(pickedAccount.getDocumentFirstPage()));
             doc1Img.setImage(img1);
             doc1Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
+        }else{
+            Image img = new Image(new FileInputStream(DocApplication.settings.getNoDocImg()));
+            doc1Img.setImage(img);
         }
 
         if(pickedAccount.getDocumentSecondPage()!= null) {
-            Image img2 = new Image(new FileInputStream(new File(pickedAccount.getDocumentSecondPage().getAbsolutePath())));
+            Image img2 = new Image(new FileInputStream(pickedAccount.getDocumentSecondPage()));
             doc2Img.setImage(img2);
             doc2Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
+        }else {
+            Image img = new Image(new FileInputStream(DocApplication.settings.getNoDocImg()));
+            doc2Img.setImage(img);
         }
 
         System.out.println("[DetailsController] - [details] : end");
@@ -158,6 +180,41 @@ public class DetailsController implements Initializable {
         stage.setTitle(DocApplication.settings.getProgName());
         stage.show();
 
+    }
+
+    private void showZoomedImage(ImageView imageView) {
+
+        if (zoomStage != null && zoomStage.isShowing()) return;
+
+        Image image = imageView.getImage();
+
+        ImageView zoomedImageView = new ImageView(image);
+        zoomedImageView.setFitWidth(400);  // можна змінити розмір
+        zoomedImageView.setPreserveRatio(true);
+
+        StackPane root = new StackPane(zoomedImageView);
+        Scene scene = new Scene(root); // або автоматично по картинці
+
+        zoomStage = new Stage();
+        zoomStage.initStyle(StageStyle.UNDECORATED); // без рамки
+        zoomStage.setAlwaysOnTop(true);              // поверх інших
+        zoomStage.setScene(scene);
+
+        // Отримуємо позицію imageView на екрані
+        Bounds bounds = imageView.localToScreen(imageView.getBoundsInLocal());
+
+        // Встановлюємо позицію вікна ПРАВОРУЧ І НИЖЧЕ imageView
+        zoomStage.setX(bounds.getMaxX() + 10);
+        zoomStage.setY(bounds.getMinY());
+
+
+        zoomStage.show();
+    }
+
+    private void hideZoomedImage() {
+        if (zoomStage != null) {
+            zoomStage.close();
+        }
     }
 
 
