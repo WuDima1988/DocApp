@@ -20,6 +20,11 @@ public class AppSettings {
     private  boolean documentsFit =true;
 
     private File mainLogo = new File("src/main/resources/com/wudima/docApp/imgs/loadImg 2.png");
+    private File noPhotoImg = new File("src/main/resources/com/wudima/docApp/imgs/noPhotoImg.jpg");
+    private File noDocImg = new File("src/main/resources/com/wudima/docApp/imgs/noDocImg.jpg");
+
+
+
 
     public String getProgName() {
         return progName;
@@ -47,6 +52,14 @@ public class AppSettings {
 
     public File getMainLogo() {
         return mainLogo;
+    }
+
+    public File getNoPhotoImg() {
+        return noPhotoImg;
+    }
+
+    public File getNoDocImg() {
+        return noDocImg;
     }
 
     public void setMainLogo(File mainLogo) {

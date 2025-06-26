@@ -7,6 +7,7 @@ module com.wudima.docApp {
     requires javafx.media;
     requires com.fasterxml.jackson.databind;
     requires jakarta.persistence;
+    requires java.desktop;
 
 
     exports com.wudima.docApp;

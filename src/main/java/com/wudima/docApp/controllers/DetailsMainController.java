@@ -15,17 +15,20 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -102,31 +105,6 @@ public class DetailsMainController implements Initializable {
         docTypeField.setFocusTraversable(false);
 
 
-//        // Початковий розмір
-//        double originalScale = 1.0;
-//        double zoomScale = 2.5;
-//
-//        photoImg.setOnMouseEntered(event -> {
-//            photoImg.setScaleX(zoomScale);
-//            photoImg.setScaleY(zoomScale);
-//        });
-//
-//        photoImg.setOnMouseExited(event -> {
-//            photoImg.setScaleX(originalScale);
-//            photoImg.setScaleY(originalScale);
-//        });
-
-//        ScaleTransition zoomIn = new ScaleTransition(Duration.millis(200), photoImg);
-//        zoomIn.setToX(3.0);
-//        zoomIn.setToY(3.0);
-//
-//        ScaleTransition zoomOut = new ScaleTransition(Duration.millis(200), photoImg);
-//        zoomOut.setToX(1.0);
-//        zoomOut.setToY(1.0);
-//
-//        photoImg.setOnMouseEntered(event -> zoomIn.playFromStart());
-//        photoImg.setOnMouseExited(event -> zoomOut.playFromStart());
-
         photoImg.setOnMouseEntered(event -> showZoomedImage(photoImg));
         photoImg.setOnMouseExited(event -> hideZoomedImage());
 
@@ -169,19 +147,27 @@ public class DetailsMainController implements Initializable {
             photoImg.setImage(img);
             photoImg.setPreserveRatio(DocApplication.settings.isPhotoFit());
         }else{
-            photoImg.setImage();
+            Image img = new Image(new FileInputStream(DocApplication.settings.getNoPhotoImg()));
+            photoImg.setImage(img);
+
         }
 
         if(pickedAccount.getDocumentFirstPage()!= null) {
             Image img1 = new Image(new FileInputStream(pickedAccount.getDocumentFirstPage()));
             doc1Img.setImage(img1);
             doc1Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
+        }else{
+            Image img = new Image(new FileInputStream(DocApplication.settings.getNoDocImg()));
+            doc1Img.setImage(img);
         }
 
         if(pickedAccount.getDocumentSecondPage()!= null) {
             Image img2 = new Image(new FileInputStream(pickedAccount.getDocumentSecondPage()));
             doc2Img.setImage(img2);
             doc2Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
+        }else {
+            Image img = new Image(new FileInputStream(DocApplication.settings.getNoDocImg()));
+            doc2Img.setImage(img);
         }
 
         System.out.println("[DetailsMainController] - [details] : end");
