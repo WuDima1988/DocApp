@@ -3,17 +3,22 @@ package com.wudima.docApp.controllers;
 import com.wudima.docApp.DocApplication;
 import com.wudima.docApp.Entity.Account;
 import com.wudima.docApp.settings.DataBaseHandler;
+import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -62,6 +67,8 @@ public class DetailsMainController implements Initializable {
 
     Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
 
+
+    private Stage zoomStage;
     public Account pickedAccount;
     public Parent root;
     public Stage stage;
@@ -93,6 +100,43 @@ public class DetailsMainController implements Initializable {
         idField.setFocusTraversable(false);
         docTypeField.setEditable(false);
         docTypeField.setFocusTraversable(false);
+
+
+//        // Початковий розмір
+//        double originalScale = 1.0;
+//        double zoomScale = 2.5;
+//
+//        photoImg.setOnMouseEntered(event -> {
+//            photoImg.setScaleX(zoomScale);
+//            photoImg.setScaleY(zoomScale);
+//        });
+//
+//        photoImg.setOnMouseExited(event -> {
+//            photoImg.setScaleX(originalScale);
+//            photoImg.setScaleY(originalScale);
+//        });
+
+//        ScaleTransition zoomIn = new ScaleTransition(Duration.millis(200), photoImg);
+//        zoomIn.setToX(3.0);
+//        zoomIn.setToY(3.0);
+//
+//        ScaleTransition zoomOut = new ScaleTransition(Duration.millis(200), photoImg);
+//        zoomOut.setToX(1.0);
+//        zoomOut.setToY(1.0);
+//
+//        photoImg.setOnMouseEntered(event -> zoomIn.playFromStart());
+//        photoImg.setOnMouseExited(event -> zoomOut.playFromStart());
+
+        photoImg.setOnMouseEntered(event -> showZoomedImage(photoImg));
+        photoImg.setOnMouseExited(event -> hideZoomedImage());
+
+        doc1Img.setOnMouseEntered(event -> showZoomedImage(doc1Img));
+        doc1Img.setOnMouseExited(event -> hideZoomedImage());
+
+        doc2Img.setOnMouseEntered(event -> showZoomedImage(doc2Img));
+        doc2Img.setOnMouseExited(event -> hideZoomedImage());
+
+
     }
 
     public void details(int id) throws FileNotFoundException, SQLException {
@@ -124,6 +168,8 @@ public class DetailsMainController implements Initializable {
             Image img = new Image(new FileInputStream(pickedAccount.getPhoto()));
             photoImg.setImage(img);
             photoImg.setPreserveRatio(DocApplication.settings.isPhotoFit());
+        }else{
+            photoImg.setImage();
         }
 
         if(pickedAccount.getDocumentFirstPage()!= null) {
@@ -172,6 +218,42 @@ public class DetailsMainController implements Initializable {
         stage.setTitle(DocApplication.settings.getProgName());
         stage.show();
 
+    }
+
+
+    private void showZoomedImage(ImageView imageView) {
+
+        if (zoomStage != null && zoomStage.isShowing()) return;
+
+        Image image = imageView.getImage();
+
+        ImageView zoomedImageView = new ImageView(image);
+        zoomedImageView.setFitWidth(400);  // можна змінити розмір
+        zoomedImageView.setPreserveRatio(true);
+
+        StackPane root = new StackPane(zoomedImageView);
+        Scene scene = new Scene(root); // або автоматично по картинці
+
+        zoomStage = new Stage();
+        zoomStage.initStyle(StageStyle.UNDECORATED); // без рамки
+        zoomStage.setAlwaysOnTop(true);              // поверх інших
+        zoomStage.setScene(scene);
+
+        // Отримуємо позицію imageView на екрані
+        Bounds bounds = imageView.localToScreen(imageView.getBoundsInLocal());
+
+        // Встановлюємо позицію вікна ПРАВОРУЧ І НИЖЧЕ imageView
+        zoomStage.setX(bounds.getMaxX() + 10);
+        zoomStage.setY(bounds.getMinY());
+
+
+        zoomStage.show();
+    }
+
+    private void hideZoomedImage() {
+        if (zoomStage != null) {
+            zoomStage.close();
+        }
     }
 
 
