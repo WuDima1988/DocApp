@@ -12,7 +12,7 @@ import java.util.List;
 public class DataBaseHandler {
 
 
-    private String dataPath = System.getProperty("user.home") + File.separator + "Documents"+ File.separator + "data"+ File.separator+"mydb.db";
+    private String dataPath = System.getProperty("user.home") + File.separator + "Documents"+ File.separator +"DocApp"+File.separator+ "data"+ File.separator+"mydb.db";
 
     private File base = new File(dataPath);
 
