@@ -167,8 +167,6 @@ public class RegistrationController implements Initializable {
 
         String photo = null;
         if(filePhoto !=null){
-
-//            photo = filePhoto.getAbsolutePath();
             photo = copyPhotoToBase(filePhoto, name,surname);
             System.out.println("[RegistrationController] - [save] : filePhoto set - "+photo);
         }
@@ -177,13 +175,13 @@ public class RegistrationController implements Initializable {
 
         String DocumentFirstPage = null;
         if(fileFirstPage !=null){
-            DocumentFirstPage = fileFirstPage.getAbsolutePath();
+            DocumentFirstPage = copyPhotoToBase(fileFirstPage,name,surname);
             System.out.println("[RegistrationController] - [save] : fileFirstPage set - "+DocumentFirstPage);
         }
 
         String DocumentSecondPage = null;
         if(fileSecondPage !=null){
-            DocumentSecondPage = fileSecondPage.getAbsolutePath();
+            DocumentSecondPage = copyPhotoToBase(fileSecondPage,name,surname);
             System.out.println("[RegistrationController] - [save] : fileSecondPage set - "+DocumentSecondPage);
         }
 

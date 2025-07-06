@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+import javax.print.Doc;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -168,12 +169,13 @@ public class DetailsMainController implements Initializable {
         }
 
         if(pickedAccount.getDocumentFirstPage()== null) {
+            System.out.println("Path Nodocimg: "+DocApplication.settings.getNoDocImg());
             Image img1 = new Image(getClass().getResourceAsStream(DocApplication.settings.getNoDocImg()));
             doc1Img.setImage(img1);
-            doc1Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
         }else{
-            Image img = new Image(new FileInputStream(DocApplication.settings.getNoDocImg()));
+            Image img = new Image(new FileInputStream(pickedAccount.getDocumentFirstPage()));
             doc1Img.setImage(img);
+            doc1Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
         }
 
         if(pickedAccount.getDocumentSecondPage()== null) {
@@ -181,8 +183,9 @@ public class DetailsMainController implements Initializable {
             doc2Img.setImage(img2);
             doc2Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
         }else {
-            Image img = new Image(new FileInputStream(DocApplication.settings.getNoDocImg()));
+            Image img = new Image(new FileInputStream(pickedAccount.getDocumentSecondPage()));
             doc2Img.setImage(img);
+            doc2Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
         }
 
         System.out.println("[DetailsMainController] - [details] : end");

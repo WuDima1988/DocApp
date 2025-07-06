@@ -84,7 +84,6 @@ public class AppSettings {
         } catch (IOException e) {
             System.out.println("[AppSettings]-[load]:: Not find config file. Made new!");
             System.out.println("Config path:"+configFile.getAbsolutePath());
-            e.printStackTrace();
             return new AppSettings();
         }
     }
