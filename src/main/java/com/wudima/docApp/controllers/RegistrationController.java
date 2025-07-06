@@ -2,6 +2,7 @@ package com.wudima.docApp.controllers;
 
 
 import com.wudima.docApp.DocApplication;
+import com.wudima.docApp.Entity.Account;
 import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +22,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -80,13 +84,27 @@ public class RegistrationController implements Initializable {
     public File fileFirstPage;
     public File filePhoto;
     public File fileSecondPage;
-    public Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+    public Image logoImg ;
 
     public RegistrationController() throws FileNotFoundException {
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        System.out.println("[RegistrationController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+        if(Optional.ofNullable(DocApplication.settings.getMainLogo()).isEmpty()){
+            logoImg = new Image(getClass().getResourceAsStream(DocApplication.settings.getDefaultLogo()));
+            System.out.println("[RegistrationController] - [initialize] :: defaultLog");
+        }else{
+            try {
+                logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+            } catch (FileNotFoundException e) {
+                System.out.println("[RegistrationController] - [initialize] :: MainLogo not found");
+
+            }
+            System.out.println("[RegistrationController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+        }
 
         mainLogo.setImage(logoImg);
         sexField.getItems().addAll(sexVariations);
@@ -149,7 +167,9 @@ public class RegistrationController implements Initializable {
 
         String photo = null;
         if(filePhoto !=null){
-            photo = filePhoto.getAbsolutePath();
+
+//            photo = filePhoto.getAbsolutePath();
+            photo = copyPhotoToBase(filePhoto, name,surname);
             System.out.println("[RegistrationController] - [save] : filePhoto set - "+photo);
         }
 
@@ -213,6 +233,26 @@ public class RegistrationController implements Initializable {
         stage.show();
 
         System.out.println("[RegistrationController] - [switchToDataBase] : end");
+    }
+
+
+    private String copyPhotoToBase(File sourceFile, String name, String surname) throws IOException {
+        System.out.println("[RegistrationController] - [copyPhotoToBas]::starts");
+        String pathForPhoto;
+        if(name.isEmpty() && surname.isEmpty()){
+            pathForPhoto = DocApplication.settings.getPhotoPath()+File.separator+"new folder";
+            Files.createDirectories(Path.of(pathForPhoto));
+        }else{
+            pathForPhoto = DocApplication.settings.getPhotoPath()+File.separator+surname+" "+name;
+            Files.createDirectories(Path.of(pathForPhoto));
+        }
+
+        Path source = Path.of(sourceFile.getAbsolutePath());
+        Path target = Path.of(pathForPhoto+"/"+sourceFile.getName());
+
+        Files.copy(source,target, StandardCopyOption.REPLACE_EXISTING);
+        System.out.println("[RegistrationController] - [copyPhotoToBas]::ended");
+        return target.toAbsolutePath().toString();
     }
 
 
