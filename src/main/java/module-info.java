@@ -11,11 +11,11 @@ module com.wudima.docApp {
 
 
     exports com.wudima.docApp;
-    opens com.wudima.docApp to javafx.fxml;
+    opens com.wudima.docApp to javafx.fxml,com.fasterxml.jackson.databind;
     opens com.wudima.docApp.Entity to javafx.fxml;
     exports com.wudima.docApp.Entity;
     exports com.wudima.docApp.settings;
-    opens com.wudima.docApp.settings to javafx.fxml;
+    opens com.wudima.docApp.settings to javafx.fxml,com.fasterxml.jackson.databind;
     exports com.wudima.docApp.controllers;
     opens com.wudima.docApp.controllers to javafx.fxml;
 

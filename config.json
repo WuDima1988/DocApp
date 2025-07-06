@@ -1,0 +1,11 @@
+{
+  "photoPath" : "/Users/wudima/Documents/DocApp/photo",
+  "logoPath" : "/Users/wudima/Documents/DocApp/logo",
+  "progName" : "Default Name",
+  "photoFit" : true,
+  "documentsFit" : true,
+  "defaultLogo" : "/com/wudima/docApp/imgs/loadImg 2.png",
+  "mainLogo" : "/Users/wudima/Documents/DocApp/logo/2_post.jpg",
+  "noPhotoImg" : "/Users/wudima/Documents/IJ_Projects/DocApp/src/main/resources/com/wudima/docApp/imgs/noPhotoImg.jpg",
+  "noDocImg" : "/Users/wudima/Documents/IJ_Projects/DocApp/src/main/resources/com/wudima/docApp/imgs/noDocImg.jpg"
+}

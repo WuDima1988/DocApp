@@ -7,14 +7,10 @@ import java.io.IOException;
 
 public class AppSettings {
 
-//    private static final String path = System.getProperty("user.home") + File.separator + "Documents"+ File.separator + "DocFinder" + File.separator + "data" + File.separator + "accountsBase.bin";
-//    private static final String photoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocFinder" + File.separator + "photo";
-//    private static File photoFolder = new File(photoPath);
-//    private static File base = new File(path);
-//    static ArrayList<Account> accountsList;
 
-    private transient final String photoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "photo";
-    private transient final String logoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "logo";
+
+    private  final String photoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "photo";
+    private  final String logoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "logo";
 
     private static final File configFile = new File("config.json");
     private String progName = "Default Name";
@@ -23,8 +19,8 @@ public class AppSettings {
 
     private String defaultLogo = "/com/wudima/docApp/imgs/loadImg 2.png";
     private String mainLogo ;
-    private File noPhotoImg = new File("src/main/resources/com/wudima/docApp/imgs/noPhotoImg.jpg");
-    private File noDocImg = new File("src/main/resources/com/wudima/docApp/imgs/noDocImg.jpg");
+    private String noPhotoImg = "/com/wudima/docApp/imgs/noPhotoImg.jpg";
+    private String noDocImg = "/com/wudima/docApp/imgs/noDocImg.jpg";
 
 
     public String getPhotoPath() {
@@ -67,11 +63,11 @@ public class AppSettings {
         return mainLogo;
     }
 
-    public File getNoPhotoImg() {
+    public String getNoPhotoImg() {
         return noPhotoImg;
     }
 
-    public File getNoDocImg() {
+    public String getNoDocImg() {
         return noDocImg;
     }
 
