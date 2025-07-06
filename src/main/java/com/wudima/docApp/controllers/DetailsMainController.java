@@ -68,7 +68,7 @@ public class DetailsMainController implements Initializable {
     @FXML
     private ImageView doc2Img;
 
-    Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+    Image logoImg ;
 
 
     private Stage zoomStage;
@@ -83,6 +83,16 @@ public class DetailsMainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        System.out.println("[DetailsMainController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+        if(Optional.ofNullable(DocApplication.settings.getMainLogo()).isEmpty()){
+            logoImg = new Image(getClass().getResourceAsStream(DocApplication.settings.getDefaultLogo()));
+            System.out.println("[DetailsMainController] - [initialize] :: defaultLog");
+        }else{
+            logoImg = new Image(getClass().getResourceAsStream(DocApplication.settings.getMainLogo()));
+            System.out.println("[DetailsMainController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+        }
+
 
 
         mainLogo.setImage(logoImg);

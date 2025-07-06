@@ -4,6 +4,7 @@ package com.wudima.docApp.controllers;
 import com.wudima.docApp.DocApplication;
 import com.wudima.docApp.Entity.Account;
 import com.wudima.docApp.exceptions.NoPickedAccountException;
+import com.wudima.docApp.settings.AppSettings;
 import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -121,6 +122,7 @@ public class DataBaseController implements Initializable {
 
     public Integer clickedAccount(ActionEvent event){
 
+
         Account clickAccount = tableView.getSelectionModel().getSelectedItem();
         if(clickAccount==null){
 
@@ -147,6 +149,8 @@ public class DataBaseController implements Initializable {
     }
 
     public void switchToDetails(ActionEvent event) throws IOException, SQLException {
+
+
 
         int accId = clickedAccount(event);
 

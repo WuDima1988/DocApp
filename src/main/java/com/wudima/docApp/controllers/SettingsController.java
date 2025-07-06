@@ -53,7 +53,7 @@ public class SettingsController implements Initializable{
         if(!settingsConfig.isDocumentsFit()){
             fitToFrameDocument.setSelected(true);
         }
-        logoName.setText(settingsConfig.getMainLogo().getAbsolutePath());
+        logoName.setText(settingsConfig.getMainLogo());
     }
 
     public void fitToFramePhotoOption(ActionEvent event){
@@ -110,6 +110,7 @@ public class SettingsController implements Initializable{
         if(fileLogo!=null) {
 
             settingsConfig.setMainLogo(copyLogoToResource(fileLogo));
+            System.out.println("[SettingsController] - [saveSettings] :: MainLogo:"+DocApplication.settings.getMainLogo());
             System.out.println("[SettingsController] - [saveSettings] :: filelogo path:"+fileLogo.getName());
         }
 
@@ -119,15 +120,17 @@ public class SettingsController implements Initializable{
         settingsConfig.save();
         Thread.sleep(1000);
         switchToDataBase(event);
+        DocApplication.settings = AppSettings.load();
+        System.out.println("New Settings load");
     }
 
-    private File copyLogoToResource(File sourceFile) throws IOException {
+    private String copyLogoToResource(File sourceFile) throws IOException {
         System.out.println("[copyLogoToResource]::starts");
         Path source = Path.of(sourceFile.getAbsolutePath());
-        Path target = Path.of(DocApplication.getLogoPath()+"/"+sourceFile.getName());
+        Path target = Path.of(DocApplication.settings.getLogoPath()+"/"+sourceFile.getName());
 
         Files.copy(source,target, StandardCopyOption.REPLACE_EXISTING);
         System.out.println("[copyLogoToResource]::ended");
-        return new File(target.toString());
+        return target.toAbsolutePath().toString();
     }
 }

@@ -13,18 +13,27 @@ public class AppSettings {
 //    private static File base = new File(path);
 //    static ArrayList<Account> accountsList;
 
+    private transient final String photoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "photo";
+    private transient final String logoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "logo";
 
     private static final File configFile = new File("config.json");
     private String progName = "Default Name";
     private  boolean photoFit =true;
     private  boolean documentsFit =true;
 
-    private File mainLogo = new File("src/main/resources/com/wudima/docApp/imgs/loadImg 2.png");
+    private String defaultLogo = "/com/wudima/docApp/imgs/loadImg 2.png";
+    private String mainLogo ;
     private File noPhotoImg = new File("src/main/resources/com/wudima/docApp/imgs/noPhotoImg.jpg");
     private File noDocImg = new File("src/main/resources/com/wudima/docApp/imgs/noDocImg.jpg");
 
 
+    public String getPhotoPath() {
+        return photoPath;
+    }
 
+    public String getLogoPath() {
+        return logoPath;
+    }
 
     public String getProgName() {
         return progName;
@@ -50,7 +59,11 @@ public class AppSettings {
         this.documentsFit = documentsFit;
     }
 
-    public File getMainLogo() {
+    public String getDefaultLogo() {
+        return defaultLogo;
+    }
+
+    public String getMainLogo() {
         return mainLogo;
     }
 
@@ -62,7 +75,7 @@ public class AppSettings {
         return noDocImg;
     }
 
-    public void setMainLogo(File mainLogo) {
+    public void setMainLogo(String mainLogo) {
         this.mainLogo = mainLogo;
     }
 
@@ -70,9 +83,12 @@ public class AppSettings {
         ObjectMapper mapper = new ObjectMapper();
         try {
             System.out.println("[AppSettings]-[load]:: config file loaded");
+            System.out.println("Config path:"+configFile.getAbsolutePath());
             return mapper.readValue(configFile, AppSettings.class);
         } catch (IOException e) {
             System.out.println("[AppSettings]-[load]:: Not find config file. Made new!");
+            System.out.println("Config path:"+configFile.getAbsolutePath());
+            e.printStackTrace();
             return new AppSettings();
         }
     }
