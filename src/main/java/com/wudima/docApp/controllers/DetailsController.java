@@ -68,10 +68,11 @@ public class DetailsController implements Initializable {
     @FXML
     private ImageView doc2Img;
 
-    Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+    Image logoImg ;
 
 
     private Stage zoomStage;
+    public Account pickedAccount;
     public Parent root;
     public Stage stage;
     public Scene scene;
@@ -83,6 +84,19 @@ public class DetailsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        System.out.println("[DetailsController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+        if(Optional.ofNullable(DocApplication.settings.getMainLogo()).isEmpty()){
+            logoImg = new Image(getClass().getResourceAsStream(DocApplication.settings.getDefaultLogo()));
+            System.out.println("[DetailsController] - [initialize] :: defaultLog");
+        }else{
+            try {
+                logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+            } catch (FileNotFoundException e) {
+                System.out.println("[DetailsController] - [initialize] :: MainLogo not found");
+
+            }
+            System.out.println("[DetailsController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+        }
 
         mainLogo.setImage(logoImg);
 
@@ -120,7 +134,7 @@ public class DetailsController implements Initializable {
         DataBaseHandler dbh = new DataBaseHandler();
 
         System.out.println("[DetailsController] - [details] : find pickedAccount " );
-        Account pickedAccount = dbh.findAccountById(id);
+        pickedAccount = dbh.findAccountById(id);
 
         System.out.println("[DetailsController] - [details] : set all fields " );
 
@@ -139,18 +153,18 @@ public class DetailsController implements Initializable {
 
 
 
-        if(pickedAccount.getPhoto()!= null) {
-            Image img = new Image(new FileInputStream(pickedAccount.getPhoto()));
+        if(pickedAccount.getPhoto()== null) {
+            Image img = new Image(getClass().getResourceAsStream(DocApplication.settings.getNoPhotoImg()));
             photoImg.setImage(img);
             photoImg.setPreserveRatio(DocApplication.settings.isPhotoFit());
         }else{
-            Image img = new Image(new FileInputStream(DocApplication.settings.getNoPhotoImg()));
+            Image img = new Image(new FileInputStream(pickedAccount.getPhoto()));
             photoImg.setImage(img);
 
         }
 
-        if(pickedAccount.getDocumentFirstPage()!= null) {
-            Image img1 = new Image(new FileInputStream(pickedAccount.getDocumentFirstPage()));
+        if(pickedAccount.getDocumentFirstPage()== null) {
+            Image img1 = new Image(getClass().getResourceAsStream(DocApplication.settings.getNoDocImg()));
             doc1Img.setImage(img1);
             doc1Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
         }else{
@@ -158,8 +172,8 @@ public class DetailsController implements Initializable {
             doc1Img.setImage(img);
         }
 
-        if(pickedAccount.getDocumentSecondPage()!= null) {
-            Image img2 = new Image(new FileInputStream(pickedAccount.getDocumentSecondPage()));
+        if(pickedAccount.getDocumentSecondPage()== null) {
+            Image img2 = new Image(getClass().getResourceAsStream(DocApplication.settings.getNoDocImg()));
             doc2Img.setImage(img2);
             doc2Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
         }else {
