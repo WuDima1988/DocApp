@@ -25,6 +25,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -83,7 +86,7 @@ public class editPageController implements Initializable {
     public File fileFirstPage;
     public File filePhoto;
     public File fileSecondPage;
-    public Image logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+    public Image logoImg;
     public Account pickedAccount;
 
     public editPageController() throws FileNotFoundException {
@@ -91,6 +94,20 @@ public class editPageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        System.out.println("[DetailsMainController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+        if(Optional.ofNullable(DocApplication.settings.getMainLogo()).isEmpty()){
+            logoImg = new Image(getClass().getResourceAsStream(DocApplication.settings.getDefaultLogo()));
+            System.out.println("[DetailsMainController] - [initialize] :: defaultLog");
+        }else{
+            try {
+                logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+            } catch (FileNotFoundException e) {
+                System.out.println("[DetailsMainController] - [initialize] :: MainLogo not found");
+
+            }
+            System.out.println("[DetailsMainController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+        }
 
         mainLogo.setImage(logoImg);
         sexField.getItems().addAll(sexVariations);
@@ -190,7 +207,7 @@ public class editPageController implements Initializable {
 
         String photo = null;
         if(filePhoto !=null){
-            photo = filePhoto.getAbsolutePath();
+            photo = copyPhotoToBase(filePhoto, name,surname);
             System.out.println("[editPageController] - [save] : filePhoto set");
         }
 
@@ -198,13 +215,13 @@ public class editPageController implements Initializable {
 
         String DocumentFirstPage = null;
         if(fileFirstPage !=null){
-            DocumentFirstPage = fileFirstPage.getAbsolutePath();
+            DocumentFirstPage = copyPhotoToBase(fileFirstPage,name,surname);
             System.out.println("[editPageController] - [save] : fileFirstPage set");
         }
 
         String DocumentSecondPage = null;
         if(fileSecondPage !=null){
-            DocumentSecondPage = fileSecondPage.getAbsolutePath();
+            DocumentSecondPage = copyPhotoToBase(fileSecondPage,name,surname);
             System.out.println("[editPageController] - [save] : fileSecondPage set");
         }
 
@@ -256,6 +273,25 @@ public class editPageController implements Initializable {
     public void deleteSecondPage(ActionEvent event){
         fileSecondPage = null;
         fileNamePhoto.setText(null);
+    }
+
+    private String copyPhotoToBase(File sourceFile, String name, String surname) throws IOException {
+        System.out.println("[RegistrationController] - [copyPhotoToBas]::starts");
+        String pathForPhoto;
+        if(name.isEmpty() && surname.isEmpty()){
+            pathForPhoto = DocApplication.settings.getPhotoPath()+File.separator+"new folder";
+            Files.createDirectories(Path.of(pathForPhoto));
+        }else{
+            pathForPhoto = DocApplication.settings.getPhotoPath()+File.separator+surname+" "+name;
+            Files.createDirectories(Path.of(pathForPhoto));
+        }
+
+        Path source = Path.of(sourceFile.getAbsolutePath());
+        Path target = Path.of(pathForPhoto+"/"+sourceFile.getName());
+
+        Files.copy(source,target, StandardCopyOption.REPLACE_EXISTING);
+        System.out.println("[RegistrationController] - [copyPhotoToBas]::ended");
+        return target.toAbsolutePath().toString();
     }
 
 
