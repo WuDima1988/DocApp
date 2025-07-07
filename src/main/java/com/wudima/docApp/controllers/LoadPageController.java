@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class LoadPageController implements Initializable {
@@ -35,7 +36,7 @@ public class LoadPageController implements Initializable {
     public Parent root;
     public Stage stage;
     public Scene scene;
-    Image mainLogo = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+    Image logoImg;
     int id;
     Thread t;
     public Runnable runnableThread;
@@ -46,7 +47,21 @@ public class LoadPageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        mainLogoView.setImage(mainLogo);
+        System.out.println("[DetailsMainController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+        if(Optional.ofNullable(DocApplication.settings.getMainLogo()).isEmpty()){
+            logoImg = new Image(getClass().getResourceAsStream(DocApplication.settings.getDefaultLogo()));
+            System.out.println("[DetailsMainController] - [initialize] :: defaultLog");
+        }else{
+            try {
+                logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+            } catch (FileNotFoundException e) {
+                System.out.println("[DetailsMainController] - [initialize] :: MainLogo not found");
+
+            }
+            System.out.println("[DetailsMainController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+        }
+
+        mainLogoView.setImage(logoImg);
         loadText.setText("Loading...");
 
         System.out.println("[init]:: id:"+id);
