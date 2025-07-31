@@ -27,6 +27,7 @@ public class DocApplication extends Application {
 
     private File logoPath = new File(settings.getLogoPath());
     private File photoPath = new File(settings.getPhotoPath());
+    private File configPath = new File(settings.getConfigPath());
 
 
     @Override
@@ -41,6 +42,12 @@ public class DocApplication extends Application {
         if(!photoPath.exists()){
             photoPath.mkdirs();
         }
+
+        if(!configPath.exists()){
+            configPath.mkdirs();
+        }
+
+
         //------------
 
         DataBaseHandler dataBaseHandler = new DataBaseHandler();

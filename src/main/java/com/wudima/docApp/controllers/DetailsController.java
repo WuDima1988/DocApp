@@ -191,7 +191,7 @@ public class DetailsController implements Initializable {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle(DocApplication.settings.getProgName());
+//        stage.setTitle(DocApplication.settings.getProgName());
         stage.show();
 
     }

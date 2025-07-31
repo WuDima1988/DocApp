@@ -11,8 +11,9 @@ public class AppSettings {
 
     private  final String photoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "photo";
     private  final String logoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "logo";
+    private static final String configPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "config";
 
-    private static final File configFile = new File("config.json");
+     static File configFile = new File(configPath+File.separator+"settings.json");
     private String progName = "Default Name";
     private  boolean photoFit =true;
     private  boolean documentsFit =true;
@@ -22,6 +23,16 @@ public class AppSettings {
     private String noPhotoImg = "/com/wudima/docApp/imgs/noPhotoImg.jpg";
     private String noDocImg = "/com/wudima/docApp/imgs/noDocImg.jpg";
 
+    public AppSettings() {
+    }
+
+    public static void setConfigFile(File configFile) {
+        AppSettings.configFile = configFile;
+    }
+
+    public String getConfigPath() {
+        return configPath;
+    }
 
     public String getPhotoPath() {
         return photoPath;
