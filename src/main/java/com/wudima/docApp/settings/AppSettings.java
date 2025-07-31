@@ -1,19 +1,18 @@
 package com.wudima.docApp.settings;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
 
 public class AppSettings {
-
-
-
-    private  final String photoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "photo";
-    private  final String logoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "logo";
+    
+    private final String photoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "photo";
+    private final String logoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "logo";
     private static final String configPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "config";
 
-     static File configFile = new File(configPath+File.separator+"settings.json");
+    private static final File configFile = new File(configPath+File.separator+"settings.json");
     private String progName = "Default Name";
     private  boolean photoFit =true;
     private  boolean documentsFit =true;
@@ -26,18 +25,16 @@ public class AppSettings {
     public AppSettings() {
     }
 
-    public static void setConfigFile(File configFile) {
-        AppSettings.configFile = configFile;
-    }
-
+    @JsonIgnore
     public String getConfigPath() {
         return configPath;
     }
 
+    @JsonIgnore
     public String getPhotoPath() {
         return photoPath;
     }
-
+    @JsonIgnore
     public String getLogoPath() {
         return logoPath;
     }
