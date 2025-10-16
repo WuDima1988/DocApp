@@ -25,12 +25,12 @@
             <TableColumn fx:id="surnameTable" prefWidth="137.0" text="surname" />
           <TableColumn fx:id="nameTable" prefWidth="125.0" text="name" />
             <TableColumn fx:id="sexTable" prefWidth="71.0" text="sex" />
-            <TableColumn fx:id="birthPlaceTable" prefWidth="88.0" text="birthPlace" />
+            <TableColumn fx:id="DocIdTable" prefWidth="88.0" text="DocId" />
             <TableColumn fx:id="docTable" prefWidth="115.0" text="doc" />
         </columns>
       </TableView>
       <Button fx:id="detailsBtn" layoutX="671.0" layoutY="181.0" mnemonicParsing="false" onAction="#switchToDetails" prefHeight="26.0" prefWidth="62.0" text="Details" />
-      <Button fx:id="loadBtn" layoutX="311.0" layoutY="504.0" mnemonicParsing="false" onAction="#switchToDLoad" prefHeight="13.0" prefWidth="148.0" style="-fx-background-color: #FFFF00; -fx-border-color: #82827f;" text="Load">
+      <Button fx:id="loadBtn" layoutX="228.0" layoutY="504.0" mnemonicParsing="false" onAction="#switchToDLoad" prefHeight="13.0" prefWidth="148.0" style="-fx-background-color: #FFFF00; -fx-border-color: #82827f;" text="Load">
          <font>
             <Font name="System Bold" size="23.0" />
          </font></Button>
@@ -43,6 +43,11 @@
                </image>
             </ImageView>
          </graphic>
+      </Button>
+      <Button fx:id="NoDocBtn1" layoutX="410.0" layoutY="504.0" mnemonicParsing="false" prefHeight="13.0" prefWidth="148.0" style="-fx-background-color: #DB3212; -fx-border-color: #82827f;" text="No Doc">
+         <font>
+            <Font name="System Bold" size="23.0" />
+         </font>
       </Button>
    </children>
 </AnchorPane>

@@ -245,17 +245,17 @@ public class DataBaseHandler {
                 account.setSex(resultSet.getString(4));
                 account.setBirthPlace(resultSet.getString(5));
 
-//                String birthDateStr = resultSet.getString(6);
-//                if (birthDateStr != null && !birthDateStr.isBlank()) {
-//                    account.setBirthDate(LocalDate.parse(birthDateStr,DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-//                } else {
-//                    account.setBirthDate(null); // або значення за замовчуванням
-//                }
+                String birthDateStr = resultSet.getString(6);
+                if (birthDateStr != null && !birthDateStr.isBlank()) {
+                    account.setBirthDate(LocalDate.parse(birthDateStr,DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+                } else {
+                    account.setBirthDate(null); // або значення за замовчуванням
+                }
 //
 //
-//                account.setDocNumber(resultSet.getString(7));
-//                account.setDocType(resultSet.getString(8));
-//                account.setIdNumber(resultSet.getLong(9));
+                account.setDocNumber(resultSet.getString(7));
+                account.setDocType(resultSet.getString(8));
+                account.setIdNumber(resultSet.getString(9));
                 String photoPath = resultSet.getString(10);
 
                 account.setPhoto(photoPath != null && !photoPath.isBlank() ? new File(photoPath) : null);

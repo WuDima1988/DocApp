@@ -4,7 +4,6 @@ package com.wudima.docApp.controllers;
 import com.wudima.docApp.DocApplication;
 import com.wudima.docApp.Entity.Account;
 import com.wudima.docApp.exceptions.NoPickedAccountException;
-import com.wudima.docApp.settings.AppSettings;
 import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -44,6 +43,9 @@ public class DataBaseController implements Initializable {
     private Button searchBtn;
 
     @FXML
+    private Button NoDocBtn1;
+
+    @FXML
     private Button loadBtn;
 
     @FXML
@@ -59,7 +61,7 @@ public class DataBaseController implements Initializable {
     private TableColumn<Account, String> sexTable;
 
     @FXML
-    private TableColumn<Account, String> birthPlaceTable;
+    private TableColumn<Account, String> DocIdTable;
 
     @FXML
     private TableColumn<Account,String> docTable;
@@ -89,7 +91,7 @@ public class DataBaseController implements Initializable {
         nameTable.setCellValueFactory(new PropertyValueFactory<Account,String>("name"));
         surnameTable.setCellValueFactory(new PropertyValueFactory<Account,String>("surname"));
         sexTable.setCellValueFactory(new PropertyValueFactory<Account,String>("sex"));
-        birthPlaceTable.setCellValueFactory(new PropertyValueFactory<Account,String>("birthPlace"));
+        DocIdTable.setCellValueFactory(new PropertyValueFactory<Account,String>("docNumber"));
         docTable.setCellValueFactory(new PropertyValueFactory<Account,String>("docBase"));
 
         showBase();
@@ -218,6 +220,8 @@ public class DataBaseController implements Initializable {
             Connection connection = dataBaseHandler.getConnection();
             list.addAll(dataBaseHandler.getAllAccounts());
             tableView.setItems(list);
+
+            list.forEach(x-> System.out.println(x.toString()));
 
             connection.close();
 
