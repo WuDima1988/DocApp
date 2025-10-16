@@ -184,6 +184,63 @@ public class DetailsController implements Initializable {
         System.out.println("[DetailsController] - [details] : end");
     }
 
+    public void details(String id) throws FileNotFoundException, SQLException {
+
+        System.out.println("[DetailsController] - [details] : start / int id = "+id );
+
+        DataBaseHandler dbh = new DataBaseHandler();
+
+        System.out.println("[DetailsController] - [details] : find pickedAccount " );
+        pickedAccount = dbh.findAccountByDocId(id);
+
+        System.out.println("[DetailsController] - [details] : set all fields " );
+
+        nameField.setText(Optional.ofNullable(pickedAccount.getName()).orElse(""));
+        surnameField.setText(Optional.ofNullable(pickedAccount.getSurname()).orElse(""));
+        sexField.setText(Optional.ofNullable(pickedAccount.getSex()).orElse(("")));
+        birthPlaceField.setText(Optional.ofNullable(pickedAccount.getBirthPlace()).orElse(""));
+        dateField.setText(
+                Optional.ofNullable(pickedAccount.getBirthDate())
+                        .map(date -> date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+                        .orElse("")
+        );
+        docNumberField.setText(Optional.ofNullable(pickedAccount.getDocNumber()).orElse(""));
+        idField.setText(Optional.ofNullable(pickedAccount.getIdNumber()).orElse(("")));
+        docTypeField.setText(Optional.ofNullable(pickedAccount.getDocType()).orElse(""));
+
+
+
+        if(pickedAccount.getPhoto()== null) {
+            Image img = new Image(getClass().getResourceAsStream(DocApplication.settings.getNoPhotoImg()));
+            photoImg.setImage(img);
+            photoImg.setPreserveRatio(DocApplication.settings.isPhotoFit());
+        }else{
+            Image img = new Image(new FileInputStream(pickedAccount.getPhoto()));
+            photoImg.setImage(img);
+
+        }
+
+        if(pickedAccount.getDocumentFirstPage()== null) {
+            Image img1 = new Image(getClass().getResourceAsStream(DocApplication.settings.getNoDocImg()));
+            doc1Img.setImage(img1);
+            doc1Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
+        }else{
+            Image img = new Image(new FileInputStream(DocApplication.settings.getNoDocImg()));
+            doc1Img.setImage(img);
+        }
+
+        if(pickedAccount.getDocumentSecondPage()== null) {
+            Image img2 = new Image(getClass().getResourceAsStream(DocApplication.settings.getNoDocImg()));
+            doc2Img.setImage(img2);
+            doc2Img.setPreserveRatio(DocApplication.settings.isDocumentsFit());
+        }else {
+            Image img = new Image(new FileInputStream(DocApplication.settings.getNoDocImg()));
+            doc2Img.setImage(img);
+        }
+
+        System.out.println("[DetailsController] - [details] : end");
+    }
+
 
 
     public void switchToDataBase(ActionEvent event) throws IOException {

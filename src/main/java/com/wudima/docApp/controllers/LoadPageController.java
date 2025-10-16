@@ -135,7 +135,11 @@ public class LoadPageController implements Initializable {
 
                            DetailsController detailsController = loader.getController();
 
+                           if(docId.isEmpty()) {
                                detailsController.details(id);
+                           }else{
+                               detailsController.details(docId);
+                           }
 
 
 

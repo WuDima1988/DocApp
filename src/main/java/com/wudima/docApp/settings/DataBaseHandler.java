@@ -229,9 +229,13 @@ public class DataBaseHandler {
 
         getConnection();
 
-        String find = "SELECT * FROM "+Constant.TABLE_NAME+" WHERE docNumber="+docId;
+        System.out.println("[DocID]:::: "+docId);
+
+        String find = "SELECT * FROM "+Constant.TABLE_NAME+" WHERE "+Constant.DOCNUMBER+" = ?";
+
 
         PreparedStatement statement = connection.prepareStatement(find);
+        statement.setString(1,docId);
 
 
         ResultSet resultSet = statement.executeQuery();
