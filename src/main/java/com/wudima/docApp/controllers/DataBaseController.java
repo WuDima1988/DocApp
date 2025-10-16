@@ -31,6 +31,9 @@ public class DataBaseController implements Initializable {
     private Button deleteBtn;
 
     @FXML
+    private Button homeButton;
+
+    @FXML
     private Button detailsBtn;
 
     @FXML
@@ -261,14 +264,16 @@ public class DataBaseController implements Initializable {
     }
 
 
-    public void switchToSettings(ActionEvent event) throws IOException {
+    @FXML
+    void switchHome(ActionEvent event) throws IOException {
 
-        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/settingsPage.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/Main.fxml"));
 
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+
     }
 
 

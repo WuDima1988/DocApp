@@ -57,7 +57,7 @@ public class DocApplication extends Application {
             throw new RuntimeException(e);
         }
 
-        FXMLLoader fxmlLoader = new FXMLLoader(DocApplication.class.getResource("dataBase.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(DocApplication.class.getResource("Main.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         icon = new Image(getClass().getResourceAsStream("imgs/icon.png"));

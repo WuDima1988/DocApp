@@ -35,19 +35,11 @@
             <Font name="System Bold" size="23.0" />
          </font></Button>
       <Button fx:id="searchBtn1" layoutX="394.0" layoutY="79.0" mnemonicParsing="false" text="Cancel" />
-      <Button layoutX="712.0" layoutY="23.0" mnemonicParsing="false" onAction="#switchToSettings" prefHeight="35.0" prefWidth="42.0">
-         <graphic>
-            <ImageView fitHeight="23.0" fitWidth="21.0" onDragDetected="#switchToSettings">
-               <image>
-                  <Image url="@imgs/settings.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <Button fx:id="NoDocBtn1" layoutX="410.0" layoutY="504.0" mnemonicParsing="false" prefHeight="13.0" prefWidth="148.0" style="-fx-background-color: #DB3212; -fx-border-color: #82827f;" text="No Doc">
          <font>
             <Font name="System Bold" size="23.0" />
          </font>
       </Button>
+      <Button fx:id="homeButton" layoutX="21.0" layoutY="29.0" mnemonicParsing="false" onAction="#switchHome" prefHeight="34.0" prefWidth="42.0" />
    </children>
 </AnchorPane>
