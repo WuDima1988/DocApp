@@ -184,6 +184,8 @@ public class DetailsController implements Initializable {
         System.out.println("[DetailsController] - [details] : end");
     }
 
+
+
     public void switchToDataBase(ActionEvent event) throws IOException {
 
         root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/dataBase.fxml"));

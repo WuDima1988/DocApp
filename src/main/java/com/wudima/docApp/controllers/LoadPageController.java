@@ -38,6 +38,7 @@ public class LoadPageController implements Initializable {
     public Scene scene;
     Image logoImg;
     int id;
+    String docId;
     Thread t;
     public Runnable runnableThread;
 
@@ -76,13 +77,27 @@ public class LoadPageController implements Initializable {
         System.out.println("[setid]:: final id:"+id);
     }
 
+    public void setDocId(String id) {
+
+        this.docId = id;
+        t=new Thread(new LoadPane(id));
+        t.start();
+
+    }
+
     class LoadPane implements Runnable{
 
 
         int id;
 
+        String docId;
+
         public LoadPane(int id) {
             this.id = id;
+        }
+
+        public LoadPane(String docId) {
+            this.docId = docId;
         }
 
         @Override

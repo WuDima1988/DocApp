@@ -224,6 +224,57 @@ public class DataBaseHandler {
         return account;
     }
 
+    public Account findAccountByDocId(String docId) throws SQLException {
+
+
+        getConnection();
+
+        String find = "SELECT * FROM "+Constant.TABLE_NAME+" WHERE docNumber="+docId;
+
+        PreparedStatement statement = connection.prepareStatement(find);
+
+
+        ResultSet resultSet = statement.executeQuery();
+
+        resultSet.next();
+
+        Account account = new Account();
+
+        account.setId(resultSet.getInt(1));
+        account.setName(resultSet.getString(2));
+        account.setSurname(resultSet.getString(3));
+        account.setSex(resultSet.getString(4));
+        account.setBirthPlace(resultSet.getString(5));
+
+        String birthDateStr = resultSet.getString(6);
+        if (birthDateStr != null && !birthDateStr.isBlank()) {
+            account.setBirthDate(LocalDate.parse(birthDateStr,DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        } else {
+            account.setBirthDate(null); // або значення за замовчуванням
+        }
+
+        account.setDocNumber(resultSet.getString(7));
+        account.setDocType(resultSet.getString(8));
+        account.setIdNumber(resultSet.getString(9));
+        String photoPath = resultSet.getString(10);
+        System.out.println("PhotoPath: "+photoPath);
+        account.setPhoto(photoPath != null && !photoPath.isBlank() ? new File(photoPath) : null);
+
+        String doc1Path = resultSet.getString(11);
+        System.out.println("doc1Path: "+doc1Path);
+        account.setDocumentFirstPage(doc1Path != null && !doc1Path.isBlank() ? new File(doc1Path) : null);
+
+        String doc2Path = resultSet.getString(12);
+        account.setDocumentSecondPage(doc2Path != null && !doc2Path.isBlank() ? new File(doc2Path) : null);
+
+
+
+        System.out.println("[DataBaseHandler] - [findAccountById] :: end ");
+        connection.close();
+
+        return account;
+    }
+
     public ArrayList<Account> getAllAccounts(){
 
         String getAll = "SELECT * FROM " + Constant.TABLE_NAME;

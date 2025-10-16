@@ -9,8 +9,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -20,51 +23,57 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
+public class SearchPageController implements Initializable {
 
     @FXML
-    private Button DataBaseBtn;
+    private Button findBtn;
 
     @FXML
-    private ImageView imgLogo;
+    private Button homeBtn;
 
     @FXML
-    private Button searchBtn;
+    private TextField idField;
 
     @FXML
-    private ImageView settingsBtn;
+    private ImageView mainLogoView;
+
+    @FXML
+    private AnchorPane rootPane;
 
     public Parent root;
     public Stage stage;
     public Scene scene;
-
-    Image logoImg ;
+    Image logoImg;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        System.out.println("[DetailsController] - [initialize] :: MainLogo "+ DocApplication.settings.getMainLogo());
         if(Optional.ofNullable(DocApplication.settings.getMainLogo()).isEmpty()){
             logoImg = new Image(getClass().getResourceAsStream(DocApplication.settings.getDefaultLogo()));
-            System.out.println("[DetailsController] - [initialize] :: defaultLog");
+            System.out.println("[DetailsMainController] - [initialize] :: defaultLog");
         }else{
             try {
                 logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
             } catch (FileNotFoundException e) {
-                System.out.println("[DetailsController] - [initialize] :: MainLogo not found");
+                System.out.println("[DetailsMainController] - [initialize] :: MainLogo not found");
 
             }
-            System.out.println("[DetailsController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+            System.out.println("[DetailsMainController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
         }
 
-        imgLogo.setImage(logoImg);
-
+        mainLogoView.setImage(logoImg);
 
     }
 
     @FXML
-    void switchToSettings(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/settingsPage.fxml"));
+    void findDocById(ActionEvent event) {
+
+    }
+
+    @FXML
+    void switchHome(ActionEvent event) throws IOException {
+
+        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/Main.fxml"));
 
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -73,26 +82,24 @@ public class MainController implements Initializable {
 
     }
 
-    @FXML
-    void switchToDataBase(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/dataBase.fxml"));
+    public void switchToDLoad(ActionEvent event) throws IOException {
+
+        String id = Optional.of(idField.getText()).orElseGet(()->"");
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/wudima/docApp/loadPage.fxml"));
+
+        root = loader.load();
+
+        LoadPageController loadPageController= loader.getController();
+
+        loadPageController.setDocId(id);
 
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
-
     }
 
-    @FXML
-    void switchToSearch(ActionEvent event) throws IOException {
 
-        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/searchPage.fxml"));
-
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-
-    }
 }
