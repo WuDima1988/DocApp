@@ -4,6 +4,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -33,6 +35,13 @@
             <Font name="System Bold" size="23.0" />
          </font></Button>
       <Button fx:id="searchBtn1" layoutX="394.0" layoutY="79.0" mnemonicParsing="false" text="Cancel" />
-      <Button fx:id="homeButton" layoutX="21.0" layoutY="29.0" mnemonicParsing="false" onAction="#switchHome" prefHeight="34.0" prefWidth="42.0" />
+      <Button fx:id="homeButton" layoutX="21.0" layoutY="29.0" mnemonicParsing="false" onAction="#switchHome" prefHeight="34.0" prefWidth="42.0">
+         <graphic>
+            <ImageView fitHeight="26.0" fitWidth="24.0">
+               <image>
+                  <Image url="@imgs/home-button.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
    </children>
 </AnchorPane>
