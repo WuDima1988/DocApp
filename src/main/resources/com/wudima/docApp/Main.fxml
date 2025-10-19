@@ -15,7 +15,14 @@
       <Button fx:id="DataBaseBtn" layoutX="14.0" layoutY="23.0" mnemonicParsing="false" onAction="#switchToDataBase" prefHeight="40.0" prefWidth="46.0">
          <font>
             <Font name="System Bold" size="13.0" />
-         </font></Button>
+         </font>
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0">
+               <image>
+                  <Image url="@imgs/database_icon.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
       <Button layoutX="712.0" layoutY="23.0" mnemonicParsing="false" onAction="#switchToSettings" prefHeight="35.0" prefWidth="42.0">
          <graphic>
             <ImageView fx:id="settingsBtn" fitHeight="23.0" fitWidth="21.0">
