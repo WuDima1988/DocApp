@@ -186,14 +186,14 @@ public class DetailsController implements Initializable {
 
     public void details(String id) throws FileNotFoundException, SQLException {
 
-        System.out.println("[DetailsController] - [details] : start / int id = "+id );
+        System.out.println("[DetailsControllerString] - [details] : start / int id = "+id );
 
         DataBaseHandler dbh = new DataBaseHandler();
 
-        System.out.println("[DetailsController] - [details] : find pickedAccount " );
+        System.out.println("[DetailsControllerString] - [details] : find pickedAccount " );
         pickedAccount = dbh.findAccountByDocId(id);
 
-        System.out.println("[DetailsController] - [details] : set all fields " );
+        System.out.println("[DetailsControllerString] - [details] : set all fields " );
 
         nameField.setText(Optional.ofNullable(pickedAccount.getName()).orElse(""));
         surnameField.setText(Optional.ofNullable(pickedAccount.getSurname()).orElse(""));
@@ -238,7 +238,7 @@ public class DetailsController implements Initializable {
             doc2Img.setImage(img);
         }
 
-        System.out.println("[DetailsController] - [details] : end");
+        System.out.println("[DetailsControllerString] - [details] : end");
     }
 
 

@@ -243,8 +243,6 @@ public class DataBaseHandler {
 
         ResultSet resultSet = statement.executeQuery();
 
-        resultSet.next();
-
         Account account = null;
         if(resultSet.next()) {
             account = new Account();
