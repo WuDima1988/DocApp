@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" prefHeight="351.0" prefWidth="442.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wudima.docApp.controllers.NotFindDocPage">
+   <children>
+      <StackPane layoutX="98.0" layoutY="31.0" prefHeight="152.0" prefWidth="246.0">
+         <children>
+            <ImageView fx:id="mainLogoView" fitHeight="146.0" fitWidth="246.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </StackPane>
+      <Label fx:id="loadText" layoutX="125.0" layoutY="222.0" text="There is no those document in base">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Label>
+      <Button fx:id="homeBtn" layoutX="188.0" layoutY="295.0" mnemonicParsing="false" onAction="#switchHome" prefHeight="26.0" prefWidth="54.0" text="Main" />
+      <Label fx:id="loadText1" layoutX="179.0" layoutY="197.0" text="ATTENTION!" textFill="#e80e0e">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

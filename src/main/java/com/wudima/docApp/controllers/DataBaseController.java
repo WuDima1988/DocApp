@@ -2,7 +2,7 @@ package com.wudima.docApp.controllers;
 
 
 import com.wudima.docApp.DocApplication;
-import com.wudima.docApp.account.Account;
+import com.wudima.docApp.Entity.Account;
 import com.wudima.docApp.exceptions.NoPickedAccountException;
 import com.wudima.docApp.settings.DataBaseHandler;
 import javafx.collections.ObservableList;
@@ -24,12 +24,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class DataBaseController implements Initializable {
 
     @FXML
     private Button deleteBtn;
+
+    @FXML
+    private Button homeButton;
 
     @FXML
     private Button detailsBtn;
@@ -42,6 +44,9 @@ public class DataBaseController implements Initializable {
 
     @FXML
     private Button searchBtn;
+
+    @FXML
+    private Button NoDocBtn1;
 
     @FXML
     private Button loadBtn;
@@ -59,7 +64,7 @@ public class DataBaseController implements Initializable {
     private TableColumn<Account, String> sexTable;
 
     @FXML
-    private TableColumn<Account, String> birthPlaceTable;
+    private TableColumn<Account, String> DocIdTable;
 
     @FXML
     private TableColumn<Account,String> docTable;
@@ -72,6 +77,9 @@ public class DataBaseController implements Initializable {
 
     @FXML
     private TextField surnameSearch;
+
+    @FXML
+    private TextField birthPlaceField;
 
     private ArrayList<Account> allAccounts;
 
@@ -86,7 +94,7 @@ public class DataBaseController implements Initializable {
         nameTable.setCellValueFactory(new PropertyValueFactory<Account,String>("name"));
         surnameTable.setCellValueFactory(new PropertyValueFactory<Account,String>("surname"));
         sexTable.setCellValueFactory(new PropertyValueFactory<Account,String>("sex"));
-        birthPlaceTable.setCellValueFactory(new PropertyValueFactory<Account,String>("birthPlace"));
+        DocIdTable.setCellValueFactory(new PropertyValueFactory<Account,String>("docNumber"));
         docTable.setCellValueFactory(new PropertyValueFactory<Account,String>("docBase"));
 
         showBase();
@@ -119,6 +127,7 @@ public class DataBaseController implements Initializable {
 
     public Integer clickedAccount(ActionEvent event){
 
+
         Account clickAccount = tableView.getSelectionModel().getSelectedItem();
         if(clickAccount==null){
 
@@ -145,6 +154,8 @@ public class DataBaseController implements Initializable {
     }
 
     public void switchToDetails(ActionEvent event) throws IOException, SQLException {
+
+
 
         int accId = clickedAccount(event);
 
@@ -213,6 +224,8 @@ public class DataBaseController implements Initializable {
             list.addAll(dataBaseHandler.getAllAccounts());
             tableView.setItems(list);
 
+            list.forEach(x-> System.out.println(x.toString()));
+
             connection.close();
 
         } catch (SQLException e) {
@@ -223,51 +236,44 @@ public class DataBaseController implements Initializable {
 
     public void search(){
 
-        tableView.setItems(showBaseBySearch());
-    }
-
-    private ObservableList<Account> showBaseBySearch() {
-
         String name = Optional.of(nameSearch.getText()).orElseGet(()->"").toLowerCase();
         String surname = Optional.of(surnameSearch.getText()).orElseGet(()->"").toLowerCase();
+        String birthPlace = Optional.of(birthPlaceField.getText()).orElseGet(()->"").toLowerCase();
 
         tableView.getItems().removeAll(tableView.getItems());
 
-        System.out.println("[DataBaseController] - [showBase]:run");
+        DataBaseHandler dataBaseHandler = new DataBaseHandler();
 
         ObservableList<Account> list = tableView.getItems();
 
-        ArrayList<Account> accList=new ArrayList<>();
+        if(list.size()>0){
+            list.removeAll(tableView.getItems());
+        }
 
-//        if(!name.isEmpty() && surname.isEmpty()){
-//            accList = DocApplication.accountsList.stream().filter(acc->acc.getName().toLowerCase().equals(name)).collect(Collectors.toCollection(ArrayList::new));
-//        }
-//        else if (name.isEmpty() && !surname.isEmpty()) {
-//            accList = DocApplication.accountsList.stream().filter(acc->acc.getSurname().toLowerCase().equals(surname)).collect(Collectors.toCollection(ArrayList::new));
-//        }
-//        else if (!name.isEmpty() && !surname.isEmpty()) {
-//            accList = DocApplication.accountsList.stream().filter(acc->acc.getName().toLowerCase().equals(surname)&&acc.getSurname().toLowerCase().equals(surname)).collect(Collectors.toCollection(ArrayList::new));
-//        } else if (name.isEmpty() && surname.isEmpty()) {
-//            return showBase();
-//        }
+        try{
+            Connection connection = dataBaseHandler.getConnection();
+            list.addAll(dataBaseHandler.getAccountsBySearch(name,surname,birthPlace));
+            tableView.setItems(list);
 
+            connection.close();
 
-        list.addAll(accList);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
-        System.out.println("[DataBaseController] - [showBase]:end");
-
-        return list;
     }
 
 
-    public void switchToSettings(ActionEvent event) throws IOException {
+    @FXML
+    void switchHome(ActionEvent event) throws IOException {
 
-        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/settingsPage.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/Main.fxml"));
 
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+
     }
 
 

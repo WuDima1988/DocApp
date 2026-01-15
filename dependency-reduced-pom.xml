@@ -19,7 +19,7 @@
               <shadedArtifactAttached>true</shadedArtifactAttached>
               <transformers>
                 <transformer>
-                  <mainClass>com.iqtech.docfinder.Main</mainClass>
+                  <mainClass>com.wudima.docApp.Main</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -42,8 +42,8 @@
           <execution>
             <id>default-cli</id>
             <configuration>
-              <mainClass>com.iqtech.docfinder.Main</mainClass>
-              <module>com.iqtech.docfinder</module>
+              <mainClass>Main</mainClass>
+              <module>com.wudima.docApp</module>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>

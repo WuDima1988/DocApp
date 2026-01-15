@@ -1,10 +1,12 @@
 package com.wudima.docApp.controllers;
 
 import com.wudima.docApp.DocApplication;
+import com.wudima.docApp.exceptions.NotFindByDocIdAccountException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -20,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class LoadPageController implements Initializable {
@@ -35,8 +38,9 @@ public class LoadPageController implements Initializable {
     public Parent root;
     public Stage stage;
     public Scene scene;
-    Image mainLogo = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+    Image logoImg;
     int id;
+    String docId;
     Thread t;
     public Runnable runnableThread;
 
@@ -46,7 +50,21 @@ public class LoadPageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        mainLogoView.setImage(mainLogo);
+        System.out.println("[DetailsMainController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+        if(Optional.ofNullable(DocApplication.settings.getMainLogo()).isEmpty()){
+            logoImg = new Image(getClass().getResourceAsStream(DocApplication.settings.getDefaultLogo()));
+            System.out.println("[DetailsMainController] - [initialize] :: defaultLog");
+        }else{
+            try {
+                logoImg = new Image(new FileInputStream(DocApplication.settings.getMainLogo()));
+            } catch (FileNotFoundException e) {
+                System.out.println("[DetailsMainController] - [initialize] :: MainLogo not found");
+
+            }
+            System.out.println("[DetailsMainController] - [initialize] :: MainLogo "+DocApplication.settings.getMainLogo());
+        }
+
+        mainLogoView.setImage(logoImg);
         loadText.setText("Loading...");
 
         System.out.println("[init]:: id:"+id);
@@ -61,13 +79,28 @@ public class LoadPageController implements Initializable {
         System.out.println("[setid]:: final id:"+id);
     }
 
+    public void setDocId(String id) {
+
+        this.docId = id;
+        t=new Thread(new LoadPane(id));
+        t.start();
+        System.out.println("!!!!!!");
+
+    }
+
     class LoadPane implements Runnable{
 
 
         int id;
 
+        String docId;
+
         public LoadPane(int id) {
             this.id = id;
+        }
+
+        public LoadPane(String docId) {
+            this.docId = docId;
         }
 
         @Override
@@ -105,7 +138,11 @@ public class LoadPageController implements Initializable {
 
                            DetailsController detailsController = loader.getController();
 
+                           if(docId.isEmpty()) {
                                detailsController.details(id);
+                           }else{
+                               detailsController.details(docId);
+                           }
 
 
 
@@ -122,7 +159,25 @@ public class LoadPageController implements Initializable {
                            throw new RuntimeException(e);
                        } catch (SQLException e) {
                             throw new RuntimeException(e);
+                        }catch(NotFindByDocIdAccountException e){
+                            System.out.println(e.getMessage());
+                            try {
+                                root = FXMLLoader.load(getClass().getResource("/com/wudima/docApp/NotFindDocPage.fxml"));
+
+                                stage = new Stage();
+                                scene = new Scene(root);
+                                stage.setScene(scene);
+                                stage.setTitle(DocApplication.settings.getProgName());
+                                stage.getIcons().add(DocApplication.icon);
+                                stage.show();
+
+                                rootPane.getScene().getWindow().hide();
+
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         }
+                        System.out.println("Thread EnD!!!");
 
                     }
                 });

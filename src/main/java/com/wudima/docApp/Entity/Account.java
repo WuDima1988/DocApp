@@ -1,18 +1,27 @@
-package com.wudima.docApp.account;
+package com.wudima.docApp.Entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 
+@Entity
 public class Account {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String surname;
     private String birthPlace;
     private String sex;
     private String docNumber;
-    private Long idNumber;
+    private String idNumber;
     private String docType;
     private LocalDate birthDate;
     private File documentFirstPage;
@@ -24,7 +33,7 @@ public class Account {
 
     }
 
-    public Account(String name, String surname, String birthPlace, String sex, String docNumber, Long idNumber, String docType, LocalDate birthDate, File documentFirstPage, File documentSecondPage, File photo) {
+    public Account(String name, String surname, String birthPlace, String sex, String docNumber, String idNumber, String docType, LocalDate birthDate, File documentFirstPage, File documentSecondPage, File photo) {
         this.name = name;
         this.surname = surname;
         this.birthPlace = birthPlace;
@@ -42,9 +51,9 @@ public class Account {
 
         if(photo!=null && documentFirstPage!=null && documentSecondPage!=null){
             return docBase="all docs";
-        } else if (photo==null&&documentFirstPage!=null && documentSecondPage!=null) {
+        } else if (photo==null &&documentFirstPage!=null && documentSecondPage!=null) {
             return docBase = "no photo";
-        }else if (photo!=null&&documentFirstPage==null && documentSecondPage==null) {
+        }else if (photo!=null && photo.exists() &&documentFirstPage==null && documentSecondPage==null) {
             return docBase = "only photo";
         }else if (photo!=null&&documentFirstPage!=null && documentSecondPage==null) {
             return docBase = "photo/first page";
@@ -138,11 +147,11 @@ public class Account {
         this.docNumber = docNumber;
     }
 
-    public Long getIdNumber() {
+    public String getIdNumber() {
         return idNumber;
     }
 
-    public void setIdNumber(Long idNumber) {
+    public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
     }
 

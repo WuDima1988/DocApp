@@ -46,5 +46,8 @@
       <DatePicker fx:id="datePicker" layoutX="541.0" layoutY="186.0" prefHeight="26.0" prefWidth="109.0" promptText="1/2/1999" />
       <ChoiceBox fx:id="sexField" layoutX="412.0" layoutY="186.0" prefHeight="26.0" prefWidth="109.0" />
       <Label fx:id="resultLabel" layoutX="362.0" layoutY="491.0" prefHeight="17.0" prefWidth="47.0" textAlignment="CENTER" />
+      <Button fx:id="deletePhoto" layoutX="323.0" layoutY="185.0" mnemonicParsing="false" onAction="#deletePhoto" prefHeight="26.0" prefWidth="53.0" text="Delete" />
+      <Button fx:id="deleteFirstPage" layoutX="323.0" layoutY="252.0" mnemonicParsing="false" onAction="#deleteFirstPage" text="Delete" />
+      <Button fx:id="deleteSecondPage" layoutX="323.0" layoutY="315.0" mnemonicParsing="false" onAction="#deleteSecondPage" text="Delete" />
    </children>
 </AnchorPane>

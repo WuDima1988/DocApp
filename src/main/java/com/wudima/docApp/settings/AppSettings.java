@@ -1,25 +1,43 @@
 package com.wudima.docApp.settings;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
 
 public class AppSettings {
+    
+    private final String photoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "photo";
+    private final String logoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "logo";
+    private static final String configPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocApp" + File.separator + "config";
 
-//    private static final String path = System.getProperty("user.home") + File.separator + "Documents"+ File.separator + "DocFinder" + File.separator + "data" + File.separator + "accountsBase.bin";
-//    private static final String photoPath = System.getProperty("user.home") +File.separator + "Documents"+ File.separator + "DocFinder" + File.separator + "photo";
-//    private static File photoFolder = new File(photoPath);
-//    private static File base = new File(path);
-//    static ArrayList<Account> accountsList;
-
-
-    private static final File configFile = new File("config.json");
+    private static final File configFile = new File(configPath+File.separator+"settings.json");
     private String progName = "Default Name";
     private  boolean photoFit =true;
     private  boolean documentsFit =true;
-//    private String mainLogo = "imgs/MainLogo.png";
-    private File mainLogo = new File("src/main/resources/com/wudima/docApp/imgs/loadImg 2.png");
+
+    private String defaultLogo = "/com/wudima/docApp/imgs/loadImg 2.png";
+    private String mainLogo ;
+    private String noPhotoImg = "/com/wudima/docApp/imgs/noPhotoImg.jpg";
+    private String noDocImg = "/com/wudima/docApp/imgs/noDocImg.jpg";
+
+    public AppSettings() {
+    }
+
+    @JsonIgnore
+    public String getConfigPath() {
+        return configPath;
+    }
+
+    @JsonIgnore
+    public String getPhotoPath() {
+        return photoPath;
+    }
+    @JsonIgnore
+    public String getLogoPath() {
+        return logoPath;
+    }
 
     public String getProgName() {
         return progName;
@@ -45,11 +63,23 @@ public class AppSettings {
         this.documentsFit = documentsFit;
     }
 
-    public File getMainLogo() {
+    public String getDefaultLogo() {
+        return defaultLogo;
+    }
+
+    public String getMainLogo() {
         return mainLogo;
     }
 
-    public void setMainLogo(File mainLogo) {
+    public String getNoPhotoImg() {
+        return noPhotoImg;
+    }
+
+    public String getNoDocImg() {
+        return noDocImg;
+    }
+
+    public void setMainLogo(String mainLogo) {
         this.mainLogo = mainLogo;
     }
 
@@ -57,9 +87,11 @@ public class AppSettings {
         ObjectMapper mapper = new ObjectMapper();
         try {
             System.out.println("[AppSettings]-[load]:: config file loaded");
+            System.out.println("Config path:"+configFile.getAbsolutePath());
             return mapper.readValue(configFile, AppSettings.class);
         } catch (IOException e) {
             System.out.println("[AppSettings]-[load]:: Not find config file. Made new!");
+            System.out.println("Config path:"+configFile.getAbsolutePath());
             return new AppSettings();
         }
     }

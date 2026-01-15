@@ -1,17 +1,19 @@
 package com.wudima.docApp.settings;
 
-import com.wudima.docApp.account.Account;
+import com.wudima.docApp.Entity.Account;
+import com.wudima.docApp.exceptions.NotFindByDocIdAccountException;
 
 import java.io.File;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DataBaseHandler {
 
 
-    private String dataPath = System.getProperty("user.home") + File.separator + "Documents"+ File.separator + "data"+ File.separator+"mydb.db";
+    private String dataPath = System.getProperty("user.home") + File.separator + "Documents"+ File.separator +"DocApp"+File.separator+ "data"+ File.separator+"mydb.db";
 
     private File base = new File(dataPath);
 
@@ -42,7 +44,7 @@ public class DataBaseHandler {
                 +Constant.BIRTHPLACE+ " TEXT, "
                 +Constant.DOCNUMBER+ " TEXT, "
                 +Constant.DOCTYPE+ " TEXT, "
-                +Constant.IDNumber+ " LONG, "
+                +Constant.IDNumber+ " TEXT, "
                 +Constant.PHOTO+ " TEXT, "
                 +Constant.DocFirstPage+" TEXT, "
                 +Constant.DocumentSecondPage+" TEXT "
@@ -64,7 +66,7 @@ public class DataBaseHandler {
             String birthPlace,
             String sex,
             String docNumber,
-            Long idNumber,
+            String idNumber,
             String docType,
             LocalDate birthDate,
             String documentFirstPage,
@@ -97,7 +99,7 @@ public class DataBaseHandler {
             }
             preparedStatement.setString(6,docNumber);
             preparedStatement.setString(7,docType);
-            preparedStatement.setLong(8,idNumber);
+            preparedStatement.setString(8,idNumber);
             preparedStatement.setString(9,photo);
             preparedStatement.setString(10, documentFirstPage);
             preparedStatement.setString(11,documentSecondPage);
@@ -131,7 +133,7 @@ public class DataBaseHandler {
                               String birthPlace,
                               String sex,
                               String docNumber,
-                              Long idNumber,
+                              String idNumber,
                               String docType,
                               LocalDate birthDate,
                               String documentFirstPage,
@@ -158,7 +160,7 @@ public class DataBaseHandler {
         }
         preparedStatement.setString(6,docNumber);
         preparedStatement.setString(7,docType);
-        preparedStatement.setLong(8,idNumber);
+        preparedStatement.setString(8,idNumber);
         preparedStatement.setString(9,photo);
         preparedStatement.setString(10, documentFirstPage);
         preparedStatement.setString(11,documentSecondPage);
@@ -174,6 +176,7 @@ public class DataBaseHandler {
 
     public Account findAccountById(int id) throws SQLException {
 
+        System.out.println("[DataBaseHandler] - [findAccountById] :: start ");
 
         getConnection();
 
@@ -196,14 +199,14 @@ public class DataBaseHandler {
 
         String birthDateStr = resultSet.getString(6);
         if (birthDateStr != null && !birthDateStr.isBlank()) {
-            account.setBirthDate(LocalDate.parse(birthDateStr));
+            account.setBirthDate(LocalDate.parse(birthDateStr,DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         } else {
             account.setBirthDate(null); // або значення за замовчуванням
         }
 
         account.setDocNumber(resultSet.getString(7));
         account.setDocType(resultSet.getString(8));
-        account.setIdNumber(resultSet.getLong(9));
+        account.setIdNumber(resultSet.getString(9));
         String photoPath = resultSet.getString(10);
         System.out.println("PhotoPath: "+photoPath);
         account.setPhoto(photoPath != null && !photoPath.isBlank() ? new File(photoPath) : null);
@@ -218,6 +221,64 @@ public class DataBaseHandler {
 
 
         System.out.println("[DataBaseHandler] - [findAccountById] :: end ");
+        connection.close();
+
+        return account;
+    }
+
+    public Account findAccountByDocId(String docId) throws SQLException {
+
+        System.out.println("[DataBaseHandler] - [findAccountByDocId] :: start ");
+
+        getConnection();
+
+        System.out.println("[DocID]:::: "+docId);
+
+        String find = "SELECT * FROM "+Constant.TABLE_NAME+" WHERE "+Constant.DOCNUMBER+" = ?";
+
+
+        PreparedStatement statement = connection.prepareStatement(find);
+        statement.setString(1,docId);
+
+
+        ResultSet resultSet = statement.executeQuery();
+
+        Account account = null;
+        if(resultSet.next()) {
+            account = new Account();
+
+            account.setId(resultSet.getInt(1));
+            account.setName(resultSet.getString(2));
+            account.setSurname(resultSet.getString(3));
+            account.setSex(resultSet.getString(4));
+            account.setBirthPlace(resultSet.getString(5));
+
+            String birthDateStr = resultSet.getString(6);
+            if (birthDateStr != null && !birthDateStr.isBlank()) {
+                account.setBirthDate(LocalDate.parse(birthDateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            } else {
+                account.setBirthDate(null); // або значення за замовчуванням
+            }
+
+            account.setDocNumber(resultSet.getString(7));
+            account.setDocType(resultSet.getString(8));
+            account.setIdNumber(resultSet.getString(9));
+            String photoPath = resultSet.getString(10);
+            System.out.println("PhotoPath: " + photoPath);
+            account.setPhoto(photoPath != null && !photoPath.isBlank() ? new File(photoPath) : null);
+
+            String doc1Path = resultSet.getString(11);
+            System.out.println("doc1Path: " + doc1Path);
+            account.setDocumentFirstPage(doc1Path != null && !doc1Path.isBlank() ? new File(doc1Path) : null);
+
+            String doc2Path = resultSet.getString(12);
+            account.setDocumentSecondPage(doc2Path != null && !doc2Path.isBlank() ? new File(doc2Path) : null);
+        }else{
+            throw new NotFindByDocIdAccountException("No Account with ID: "+docId);
+        }
+
+
+        System.out.println("[DataBaseHandler] - [findAccountByDocId] :: end ");
         connection.close();
 
         return account;
@@ -239,7 +300,6 @@ public class DataBaseHandler {
                 Account account = new Account();
 
                 account.setId(resultSet.getInt(1));
-                System.out.println("Account Id: "+resultSet.getLong(1));
                 account.setName(resultSet.getString(2));
                 account.setSurname(resultSet.getString(3));
                 account.setSex(resultSet.getString(4));
@@ -251,17 +311,17 @@ public class DataBaseHandler {
                 } else {
                     account.setBirthDate(null); // або значення за замовчуванням
                 }
-
-
+//
+//
                 account.setDocNumber(resultSet.getString(7));
                 account.setDocType(resultSet.getString(8));
-                account.setIdNumber(resultSet.getLong(9));
+                account.setIdNumber(resultSet.getString(9));
                 String photoPath = resultSet.getString(10);
-                System.out.println("PhotoPath: "+photoPath);
+
                 account.setPhoto(photoPath != null && !photoPath.isBlank() ? new File(photoPath) : null);
 
                 String doc1Path = resultSet.getString(11);
-                System.out.println("doc1Path: "+doc1Path);
+
                 account.setDocumentFirstPage(doc1Path != null && !doc1Path.isBlank() ? new File(doc1Path) : null);
 
                 String doc2Path = resultSet.getString(12);
@@ -274,5 +334,74 @@ public class DataBaseHandler {
         }
 
         return allAccounts;
+    }
+
+    public ArrayList<Account> getAccountsBySearch(String name, String surname, String birthPlace){
+
+        ArrayList<Account> allAccountsBySearch = new ArrayList<>();
+
+        StringBuilder queryBuilder = new StringBuilder("SELECT * FROM " + Constant.TABLE_NAME);
+        List<String> conditions = new ArrayList<>();
+        List<Object> parameters = new ArrayList<>();
+
+        if (name != null && !name.isBlank()) {
+            conditions.add("name LIKE ?");
+            parameters.add("%" + name + "%");
+        }
+        if (surname != null && !surname.isBlank()) {
+            conditions.add("surname LIKE ?");
+            parameters.add("%" + surname + "%");
+        }
+        if (birthPlace != null && !birthPlace.isBlank()) {
+            conditions.add("birth_place LIKE ?");
+            parameters.add("%" + birthPlace + "%");
+        }
+
+        if (!conditions.isEmpty()) {
+            queryBuilder.append(" WHERE ");
+            queryBuilder.append(String.join(" AND ", conditions));
+        }
+
+        String finalQuery = queryBuilder.toString();
+
+        try (PreparedStatement preparedStatementstmt = connection.prepareStatement(finalQuery)) {
+
+            for (int i = 0; i < parameters.size(); i++) {
+                preparedStatementstmt.setObject(i + 1, parameters.get(i));
+            }
+
+            ResultSet resultSet = preparedStatementstmt.executeQuery();
+
+            while (resultSet.next()) {
+                Account account = new Account();
+
+                account.setId(resultSet.getInt(1));
+                account.setName(resultSet.getString(2));
+                account.setSurname(resultSet.getString(3));
+                account.setSex(resultSet.getString(4));
+                account.setBirthPlace(resultSet.getString(5));
+
+                String photoPath = resultSet.getString(10);
+
+                account.setPhoto(photoPath != null && !photoPath.isBlank() ? new File(photoPath) : null);
+
+                String doc1Path = resultSet.getString(11);
+
+                account.setDocumentFirstPage(doc1Path != null && !doc1Path.isBlank() ? new File(doc1Path) : null);
+
+                String doc2Path = resultSet.getString(12);
+                account.setDocumentSecondPage(doc2Path != null && !doc2Path.isBlank() ? new File(doc2Path) : null);
+
+                allAccountsBySearch.add(account);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // або логування
+        }
+
+
+
+        return allAccountsBySearch;
+
     }
 }
